@@ -1,28 +1,25 @@
 package cz.linkedlist;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.support.ResourcePatternResolver;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication
 @EnableAutoConfiguration
 public class SentinelEater implements CommandLineRunner {
 
-	private static final String BUCKET = "sentinel-s2-l1c";
+	public static final String BUCKET = "sentinel-s2-l1c";
+	public static final String TILES = "tiles/";
 
-	@Autowired
-	private AmazonS3Client client;
-	@Autowired
-	private ResourcePatternResolver resourcePatternResolver;
+//	@Autowired
+//	private ResourcePatternResolver resourcePatternResolver;
+
+    @Autowired
+	private TileListingService tileListingService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SentinelEater.class, args).close();
@@ -40,13 +37,11 @@ public class SentinelEater implements CommandLineRunner {
 //			IOUtils.copy(objectInputStream, fos);
 //		}
 
-		ListObjectsV2Request request1 = new ListObjectsV2Request();
-		request1.setBucketName(BUCKET);
-		request1.setPrefix("tiles/36/M/TD/2017");
+		Set<Integer> years = tileListingService.getYears(1.1, 2.2);
+		System.out.println(years);
 
-		ListObjectsV2Result list = client.listObjectsV2(request1);
-		List<LocalDate> dates = DateParser.parse(list.getObjectSummaries());
-		System.out.println("Found dates in list: " + dates);
+//		List<LocalDate> dates = tileListingService.squareToDate(1.1, 2.2);
+//		System.out.println(dates);
 
 //		Resource[] allFiles =  this.resourcePatternResolver.getResources("s3://"+BUCKET+"/tiles/36/M/TD/2017/1/**/*");
 //		for (Resource resource : allFiles) {
