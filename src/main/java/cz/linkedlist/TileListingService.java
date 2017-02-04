@@ -23,8 +23,7 @@ public class TileListingService {
 
     private final AmazonS3Client client;
 
-    public Set<Integer> getYears(double latitude, double longitude) {
-        UTMCode code = LatLongParser.parse(latitude, longitude);
+    public Set<Integer> getYears(UTMCode code) {
         final String prefix = TILES + code.toString();
         ListObjectsV2Request request = new ListObjectsV2Request();
         request.setBucketName(BUCKET);
@@ -39,6 +38,11 @@ public class TileListingService {
             years.add(Integer.valueOf(yearString));
         }
         return years;
+    }
+
+    public Set<Integer> getYears(double latitude, double longitude) {
+        UTMCode code = LatLongParser.parse(latitude, longitude);
+        return getYears(code);
     }
 
     /**
