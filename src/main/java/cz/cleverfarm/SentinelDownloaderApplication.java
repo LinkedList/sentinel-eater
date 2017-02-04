@@ -5,10 +5,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ListObjectsRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,6 +62,15 @@ public class SentinelDownloaderApplication implements CommandLineRunner {
 			IOUtils.copy(objectInputStream, fos);
 		}
 
-		ListObjectsRequest request1 = new ListObjectsRequest();
+		ListObjectsV2Request request1 = new ListObjectsV2Request();
+		request1.setBucketName(bucket);
+		request1.setDelimiter("/");
+		request1.setPrefix("tiles/36/M/TD/2016/8/31/0/");
+		request1.setMaxKeys(10);
+
+		ListObjectsV2Result list = client.listObjectsV2(request1);
+		for (S3ObjectSummary summary: list.getObjectSummaries()) {
+			System.out.println(" - " + summary.getKey() + "  " + "(size = " + summary.getSize() + ")");
+		}
 	}
 }
