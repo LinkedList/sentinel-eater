@@ -1,0 +1,7 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: #AWS ACCESS KEY
+      secretKey: #AWS SECRET KEY
+    region:
+      static: eu-central-1
