@@ -19,5 +19,5 @@ Or append command line parameters before every run:
 ```
 ## How to run
 ```
-java -jar target/sentinel-downloader-0.0.1-SNAPSHOT.jar
+java -jar target/eater.jar
 ```

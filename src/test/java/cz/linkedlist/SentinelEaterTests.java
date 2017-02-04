@@ -1,4 +1,4 @@
-package cz.cleverfarm;
+package cz.linkedlist;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SentinelDownloaderApplicationTests {
+public class SentinelEaterTests {
 
 	@Test
 	public void contextLoads() {
