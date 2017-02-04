@@ -1,13 +1,17 @@
 package cz.linkedlist;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -36,19 +40,17 @@ public class SentinelEater implements CommandLineRunner {
 //			IOUtils.copy(objectInputStream, fos);
 //		}
 
-//		ListObjectsV2Request request1 = new ListObjectsV2Request();
-//		request1.setBucketName(BUCKET);
-//		request1.setPrefix("tiles/36/M/TD/2017");
-//
-//		ListObjectsV2Result list = client.listObjectsV2(request1);
-//		for (S3ObjectSummary summary: list.getObjectSummaries()) {
-//			System.out.println(" - " + summary.getKey() + "  " + "(size = " + summary.getSize() + ")");
-//		}
-//		System.out.println(list.isTruncated());
+		ListObjectsV2Request request1 = new ListObjectsV2Request();
+		request1.setBucketName(BUCKET);
+		request1.setPrefix("tiles/36/M/TD/2017");
 
-		Resource[] allFiles =  this.resourcePatternResolver.getResources("s3://"+BUCKET+"/tiles/36/M/TD/2017/1/**/*");
-		for (Resource resource : allFiles) {
-			System.out.println(resource.getFilename());
-		}
+		ListObjectsV2Result list = client.listObjectsV2(request1);
+		List<LocalDate> dates = DateParser.parse(list.getObjectSummaries());
+		System.out.println("Found dates in list: " + dates);
+
+//		Resource[] allFiles =  this.resourcePatternResolver.getResources("s3://"+BUCKET+"/tiles/36/M/TD/2017/1/**/*");
+//		for (Resource resource : allFiles) {
+//			System.out.println(resource.getFilename());
+//		}
 	}
 }
