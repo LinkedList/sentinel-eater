@@ -1,6 +1,8 @@
 # Sentinel Eater
 ![Sentinel](https://openclipart.org/image/200px/svg_to_png/196091/satellite-icon.png)
 
+![Travis Build](https://travis-ci.org/LinkedList/sentinel-eater.svg?branch=master)
+
 Service for automatic download of Sentinel data.
 
 ## Settings
