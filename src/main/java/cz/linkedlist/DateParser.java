@@ -44,6 +44,7 @@ public class DateParser {
                 dates.add(date);
             } else {
                 System.out.println("Found key that doesn't match: " + summary.getKey());
+                summaries.removeIf(s -> s.getKey().contains(summary.getKey()));
             }
         }
         return dates;
