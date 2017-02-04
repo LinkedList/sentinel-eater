@@ -1,6 +1,8 @@
 package cz.linkedlist;
 
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.regex.Pattern;
  */
 public class DateParser {
 
+    private static final Logger log = LoggerFactory.getLogger(DateParser.class);
     private static final Pattern DATE_PATTERN = Pattern.compile("tiles/[^/]*/[^/]*/[^/]*/([^/]+)/([^/]+)/([^/]+)/.*");
 
     /**
@@ -43,7 +46,7 @@ public class DateParser {
                 summaries.removeIf(s -> s.getKey().contains(y+"/"+m+"/"+d));
                 dates.add(date);
             } else {
-                System.out.println("Found key that doesn't match: " + summary.getKey());
+                log.info("Found key that doesn't match: " + summary.getKey());
                 summaries.removeIf(s -> s.getKey().contains(summary.getKey()));
             }
         }
