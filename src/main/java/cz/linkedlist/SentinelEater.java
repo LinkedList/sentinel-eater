@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Set;
+import java.time.LocalDate;
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -37,8 +37,8 @@ public class SentinelEater implements CommandLineRunner {
 //			IOUtils.copy(objectInputStream, fos);
 //		}
 
-		Set<Integer> years = tileListingService.getYears(1.1, 2.2);
-		System.out.println(years);
+//		Set<Integer> years = tileListingService.getYears(1.1, 2.2);
+//		System.out.println(years);
 
 //		List<LocalDate> dates = tileListingService.squareToDate(1.1, 2.2);
 //		System.out.println(dates);
@@ -47,5 +47,8 @@ public class SentinelEater implements CommandLineRunner {
 //		for (Resource resource : allFiles) {
 //			System.out.println(resource.getFilename());
 //		}
+
+		TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 1);
+		System.out.println(tileListingService.exists(tileSet));
 	}
 }

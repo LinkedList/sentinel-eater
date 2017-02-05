@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
  * @author Martin Macko <https://github.com/LinkedList>
  */
 @Data
-public class DataSet {
+public class TileSet {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("uuuu/M/d/");
 

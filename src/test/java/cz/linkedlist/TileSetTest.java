@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.is;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-public class DataSetTest {
+public class TileSetTest {
 
     @Test
     public void testToString() throws Exception {
@@ -18,9 +18,9 @@ public class DataSetTest {
         LocalDate date = LocalDate.of(2017, 3, 10);
         Integer setOrder = 0;
 
-        DataSet dataSet = new DataSet(code, date, setOrder);
+        TileSet tileSet = new TileSet(code, date, setOrder);
 
-        assertThat(dataSet.toString(), is("tiles/28/C/DD/2017/3/10/0/"));
+        assertThat(tileSet.toString(), is("tiles/28/C/DD/2017/3/10/0/"));
     }
 
     @Test
@@ -29,8 +29,8 @@ public class DataSetTest {
         LocalDate date = LocalDate.of(2017, 3, 9);
         Integer setOrder = 0;
 
-        DataSet dataSet = new DataSet(code, date, setOrder);
+        TileSet tileSet = new TileSet(code, date, setOrder);
 
-        assertThat(dataSet.toString(), is("tiles/28/C/DD/2017/3/9/0/"));
+        assertThat(tileSet.toString(), is("tiles/28/C/DD/2017/3/9/0/"));
     }
 }

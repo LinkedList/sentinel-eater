@@ -5,12 +5,12 @@ import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import org.testng.annotations.Test;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -109,4 +109,27 @@ public class TileListingServiceTest {
 
     }
 
+    @Test
+    public void testExists() throws Exception {
+        AmazonS3Client client = mock(AmazonS3Client.class);
+        TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 1);
+        ListObjectsV2Result list = new ListObjectsV2Result();
+        list.setKeyCount(1);
+        when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+        service = new TileListingService(client);
+
+        assertThat(service.exists(tileSet), is(true));
+    }
+
+    @Test
+    public void testExistsNotExists() throws Exception {
+        AmazonS3Client client = mock(AmazonS3Client.class);
+        TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 1);
+        ListObjectsV2Result list = new ListObjectsV2Result();
+        list.setKeyCount(0);
+        when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+        service = new TileListingService(client);
+
+        assertThat(service.exists(tileSet), is(false));
+    }
 }

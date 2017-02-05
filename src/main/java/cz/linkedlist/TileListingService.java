@@ -23,7 +23,14 @@ public class TileListingService {
 
     private final AmazonS3Client client;
 
-    public Set<Integer> getYears(UTMCode code) {
+    public boolean exists(final TileSet tileSet) {
+        ListObjectsV2Request request = buildRequest(tileSet.toString());
+        request.setDelimiter(null);
+        ListObjectsV2Result list = client.listObjectsV2(request);
+        return list.getKeyCount() > 0;
+    }
+
+    public Set<Integer> getYears(final UTMCode code) {
         final String prefix = TILES + code.toString();
         return getPossibleValues(prefix);
     }
@@ -47,7 +54,7 @@ public class TileListingService {
         return getPossibleValues(prefix);
     }
 
-    private Set<Integer> getPossibleValues(String prefix) {
+    private Set<Integer> getPossibleValues(final String prefix) {
         ListObjectsV2Request request = buildRequest(prefix);
         ListObjectsV2Result list = client.listObjectsV2(request);
         Set<Integer> values = new HashSet<>();
@@ -57,7 +64,7 @@ public class TileListingService {
         return values;
     }
 
-    private ListObjectsV2Request buildRequest(String prefix) {
+    private ListObjectsV2Request buildRequest(final String prefix) {
         ListObjectsV2Request request = new ListObjectsV2Request();
         request.setBucketName(BUCKET);
         request.setPrefix(prefix);
