@@ -65,4 +65,48 @@ public class TileListingServiceTest {
         assertThat(months, hasItem(2));
         assertThat(months, hasItem(3));
     }
+
+    @Test
+    public void testGetDays() throws Exception {
+        AmazonS3Client client = mock(AmazonS3Client.class);
+        UTMCode code = new UTMCode(10, "M", "AB");
+        ListObjectsV2Result list = new ListObjectsV2Result();
+        list.setCommonPrefixes(Arrays.asList(
+                SentinelEater.TILES + code.toString() + "2015/1/15/",
+                SentinelEater.TILES + code.toString() + "2015/1/18/",
+                SentinelEater.TILES + code.toString() + "2015/1/25/"
+        ));
+        when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+
+        service = new TileListingService(client);
+
+        Set<Integer> days = service.getDays(code, 2015, 1);
+
+        assertThat(days, hasSize(3));
+        assertThat(days, hasItem(15));
+        assertThat(days, hasItem(18));
+        assertThat(days, hasItem(25));
+    }
+
+    @Test
+    public void testGetDataSets() throws Exception {
+        AmazonS3Client client = mock(AmazonS3Client.class);
+        UTMCode code = new UTMCode(10, "M", "AB");
+        ListObjectsV2Result list = new ListObjectsV2Result();
+        list.setCommonPrefixes(Arrays.asList(
+                SentinelEater.TILES + code.toString() + "2015/1/15/0/",
+                SentinelEater.TILES + code.toString() + "2015/1/15/1/"
+        ));
+        when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+
+        service = new TileListingService(client);
+
+        Set<Integer> dataSets = service.getDataSets(code, 2015, 1, 15);
+
+        assertThat(dataSets, hasSize(2));
+        assertThat(dataSets, hasItem(0));
+        assertThat(dataSets, hasItem(1));
+
+    }
+
 }

@@ -25,27 +25,36 @@ public class TileListingService {
 
     public Set<Integer> getYears(UTMCode code) {
         final String prefix = TILES + code.toString();
-        ListObjectsV2Request request = buildRequest(prefix);
-
-        ListObjectsV2Result list = client.listObjectsV2(request);
-        Set<Integer> years = new HashSet<>();
-        for (String s : list.getCommonPrefixes()) {
-            years.add(Integer.valueOf(stripPrefixAnsSlash(prefix, s)));
-        }
-        return years;
+        return getPossibleValues(prefix);
     }
 
     public Set<Integer> getMonths(final UTMCode code, final int year) {
         final String prefix = TILES + code.toString() + year + "/";
+        return getPossibleValues(prefix);
+    }
+
+    public Set<Integer> getDays(final UTMCode code, final int year, final int month) {
+        final String prefix = TILES + code.toString() + year + "/" + month + "/";
+        return getPossibleValues(prefix);
+    }
+
+    /**
+     * Every day can have multiple datasets beginning with 0.
+     * Even though there will be usually only single one, we have to check it.
+     */
+    public Set<Integer> getDataSets(final UTMCode code, final int year, final int month, final int day) {
+        final String prefix = TILES + code.toString() + year + "/" + month + "/" + day + "/";
+        return getPossibleValues(prefix);
+    }
+
+    private Set<Integer> getPossibleValues(String prefix) {
         ListObjectsV2Request request = buildRequest(prefix);
-
         ListObjectsV2Result list = client.listObjectsV2(request);
-        Set<Integer> months = new HashSet<>();
+        Set<Integer> values = new HashSet<>();
         for (String s : list.getCommonPrefixes()) {
-            months.add(Integer.valueOf(stripPrefixAnsSlash(prefix, s)));
+            values.add(Integer.valueOf(stripPrefixAnsSlash(prefix, s)));
         }
-        return months;
-
+        return values;
     }
 
     private ListObjectsV2Request buildRequest(String prefix) {
