@@ -83,13 +83,11 @@ public class TileListingService {
         request1.setPrefix(TILES + code.toString());
 
         ListObjectsV2Result list = client.listObjectsV2(request1);
-        List<LocalDate> dates = DateParser.parse(list.getObjectSummaries());
-        return dates;
+        return DateParser.parse(list.getObjectSummaries());
     }
 
     private static String stripPrefixAnsSlash(String prefix, String value) {
         String strippedPrefix = value.substring(prefix.length());
-        String strippedSlash = strippedPrefix.substring(0, strippedPrefix.length() - 1);
-        return strippedSlash;
+        return strippedPrefix.substring(0, strippedPrefix.length() - 1);
     }
 }
