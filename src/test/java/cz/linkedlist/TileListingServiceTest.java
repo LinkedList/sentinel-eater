@@ -44,4 +44,25 @@ public class TileListingServiceTest {
         assertThat(years, hasItem(2017));
     }
 
+    @Test
+    public void testGetMonths() throws Exception {
+        AmazonS3Client client = mock(AmazonS3Client.class);
+        UTMCode code = new UTMCode(10, "M", "AB");
+        ListObjectsV2Result list = new ListObjectsV2Result();
+        list.setCommonPrefixes(Arrays.asList(
+                SentinelEater.TILES + code.toString() + "2015/1/",
+                SentinelEater.TILES + code.toString() + "2015/2/",
+                SentinelEater.TILES + code.toString() + "2015/3/"
+        ));
+        when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+
+        service = new TileListingService(client);
+
+        Set<Integer> months = service.getMonths(code, 2015);
+
+        assertThat(months, hasSize(3));
+        assertThat(months, hasItem(1));
+        assertThat(months, hasItem(2));
+        assertThat(months, hasItem(3));
+    }
 }

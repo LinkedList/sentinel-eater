@@ -25,19 +25,35 @@ public class TileListingService {
 
     public Set<Integer> getYears(UTMCode code) {
         final String prefix = TILES + code.toString();
-        ListObjectsV2Request request = new ListObjectsV2Request();
-        request.setBucketName(BUCKET);
-        request.setPrefix(prefix);
-        request.setDelimiter("/");
+        ListObjectsV2Request request = buildRequest(prefix);
 
         ListObjectsV2Result list = client.listObjectsV2(request);
         Set<Integer> years = new HashSet<>();
         for (String s : list.getCommonPrefixes()) {
-            String yearStringWithSlash = s.substring(prefix.length());
-            String yearString = yearStringWithSlash.substring(0, yearStringWithSlash.length() - 1);
-            years.add(Integer.valueOf(yearString));
+            years.add(Integer.valueOf(stripPrefixAnsSlash(prefix, s)));
         }
         return years;
+    }
+
+    public Set<Integer> getMonths(final UTMCode code, final int year) {
+        final String prefix = TILES + code.toString() + year + "/";
+        ListObjectsV2Request request = buildRequest(prefix);
+
+        ListObjectsV2Result list = client.listObjectsV2(request);
+        Set<Integer> months = new HashSet<>();
+        for (String s : list.getCommonPrefixes()) {
+            months.add(Integer.valueOf(stripPrefixAnsSlash(prefix, s)));
+        }
+        return months;
+
+    }
+
+    private ListObjectsV2Request buildRequest(String prefix) {
+        ListObjectsV2Request request = new ListObjectsV2Request();
+        request.setBucketName(BUCKET);
+        request.setPrefix(prefix);
+        request.setDelimiter("/");
+        return request;
     }
 
     public Set<Integer> getYears(double latitude, double longitude) {
@@ -60,5 +76,11 @@ public class TileListingService {
         ListObjectsV2Result list = client.listObjectsV2(request1);
         List<LocalDate> dates = DateParser.parse(list.getObjectSummaries());
         return dates;
+    }
+
+    private static String stripPrefixAnsSlash(String prefix, String value) {
+        String strippedPrefix = value.substring(prefix.length());
+        String strippedSlash = strippedPrefix.substring(0, strippedPrefix.length() - 1);
+        return strippedSlash;
     }
 }
