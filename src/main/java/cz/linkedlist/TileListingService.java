@@ -15,7 +15,7 @@ import static cz.linkedlist.SentinelEater.BUCKET;
 import static cz.linkedlist.SentinelEater.TILES;
 
 /**
- * @author Martin Macko <martin.macko@clevermaps.cz>.
+ * @author Martin Macko <https://github.com/LinkedList>.
  */
 @Service
 @RequiredArgsConstructor

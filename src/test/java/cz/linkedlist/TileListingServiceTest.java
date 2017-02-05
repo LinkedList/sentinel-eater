@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Martin Macko <martin.macko@clevermaps.cz>.
+ * @author Martin Macko <https://github.com/LinkedList>.
  */
 public class TileListingServiceTest {
 
