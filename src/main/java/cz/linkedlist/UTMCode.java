@@ -10,7 +10,7 @@ public class UTMCode {
     /**
      * Grid zone designator
      */
-    private final Integer utm;
+    private final Integer gridZoneDesignator;
 
     /**
      * Latitude band are lettered C- X (omitting the letters "I" and "O")
@@ -23,9 +23,9 @@ public class UTMCode {
     private final String square;
 
     /**
-     * @return format for S3 bucket searching: utm/latitudeBand/square/ e.g. 28/C/DG/
+     * @return format for S3 bucket searching: gridZoneDesignator/latitudeBand/square/ e.g. 28/C/DG/
      */
     public String toString() {
-        return utm + "/" + latitudeBand + "/" + square + "/";
+        return gridZoneDesignator + "/" + latitudeBand + "/" + square + "/";
     }
 }
