@@ -48,7 +48,8 @@ public class SentinelEater implements CommandLineRunner {
 //			System.out.println(resource.getFilename());
 //		}
 
-		TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 1);
+		TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 0);
 		System.out.println(tileListingService.exists(tileSet));
+		System.out.println(tileListingService.getFolderContents(tileSet));
 	}
 }

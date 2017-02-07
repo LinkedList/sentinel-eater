@@ -3,10 +3,12 @@ package cz.linkedlist;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +25,17 @@ import static cz.linkedlist.SentinelEater.TILES;
 public class AmazonSDKTileListingService implements TileListingService {
 
     private final AmazonS3Client client;
+
+    @Override
+    public List<String> getFolderContents(TileSet tileSet) {
+        ListObjectsV2Request request = buildRequest(tileSet.toString());
+        request.setDelimiter(null);
+        ListObjectsV2Result list = client.listObjectsV2(request);
+        List<String> objects = list.getObjectSummaries().stream()
+                .map(S3ObjectSummary::toString)
+                .collect(Collectors.toList());
+        return objects;
+    }
 
     @Override
     public boolean exists(final TileSet tileSet) {

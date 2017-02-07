@@ -8,6 +8,9 @@ import java.util.Set;
  * @author Martin Macko <https://github.com/LinkedList>.
  */
 public interface TileListingService {
+
+    List<String> getFolderContents(TileSet tileSet);
+
     boolean exists(TileSet tileSet);
 
     Set<Integer> getYears(UTMCode code);
