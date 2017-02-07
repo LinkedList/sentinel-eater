@@ -30,16 +30,6 @@ public class SentinelEater implements CommandLineRunner {
 
 	@Override
 	public void run(String... strings) throws Exception {
-//		GetObjectRequest request = new GetObjectRequest(BUCKET, "tiles/36/M/TD/2016/8/31/0/B01.jp2");
-//
-//		try(
-//				S3Object s3Object = client.getObject(request);
-//				FileOutputStream fos = new FileOutputStream("/tmp/B01.jp2");
-//				S3ObjectInputStream objectInputStream = s3Object.getObjectContent()
-//		) {
-//			IOUtils.copy(objectInputStream, fos);
-//		}
-
 //		Set<Integer> years = tileListingService.getYears(1.1, 2.2);
 //		System.out.println(years);
 
