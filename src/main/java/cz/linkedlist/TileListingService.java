@@ -1,100 +1,24 @@
 package cz.linkedlist;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static cz.linkedlist.SentinelEater.BUCKET;
-import static cz.linkedlist.SentinelEater.TILES;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>.
  */
-@Service
-@RequiredArgsConstructor
-public class TileListingService {
+public interface TileListingService {
+    boolean exists(TileSet tileSet);
 
-    private final AmazonS3Client client;
+    Set<Integer> getYears(UTMCode code);
 
-    public boolean exists(final TileSet tileSet) {
-        ListObjectsV2Request request = buildRequest(tileSet.toString());
-        request.setDelimiter(null);
-        ListObjectsV2Result list = client.listObjectsV2(request);
-        return list.getKeyCount() > 0;
-    }
+    Set<Integer> getMonths(UTMCode code, int year);
 
-    public Set<Integer> getYears(final UTMCode code) {
-        final String prefix = TILES + code.toString();
-        return getPossibleValues(prefix);
-    }
+    Set<Integer> getDays(UTMCode code, int year, int month);
 
-    public Set<Integer> getMonths(final UTMCode code, final int year) {
-        final String prefix = TILES + code.toString() + year + "/";
-        return getPossibleValues(prefix);
-    }
+    Set<Integer> getDataSets(UTMCode code, int year, int month, int day);
 
-    public Set<Integer> getDays(final UTMCode code, final int year, final int month) {
-        final String prefix = TILES + code.toString() + year + "/" + month + "/";
-        return getPossibleValues(prefix);
-    }
+    Set<Integer> getYears(double latitude, double longitude);
 
-    /**
-     * Every day can have multiple datasets beginning with 0.
-     * Even though there will be usually only single one, we have to check it.
-     */
-    public Set<Integer> getDataSets(final UTMCode code, final int year, final int month, final int day) {
-        final String prefix = TILES + code.toString() + year + "/" + month + "/" + day + "/";
-        return getPossibleValues(prefix);
-    }
-
-    private Set<Integer> getPossibleValues(final String prefix) {
-        ListObjectsV2Request request = buildRequest(prefix);
-        ListObjectsV2Result list = client.listObjectsV2(request);
-        Set<Integer> values = new HashSet<>();
-        for (String s : list.getCommonPrefixes()) {
-            values.add(Integer.valueOf(stripPrefixAnsSlash(prefix, s)));
-        }
-        return values;
-    }
-
-    private ListObjectsV2Request buildRequest(final String prefix) {
-        ListObjectsV2Request request = new ListObjectsV2Request();
-        request.setBucketName(BUCKET);
-        request.setPrefix(prefix);
-        request.setDelimiter("/");
-        return request;
-    }
-
-    public Set<Integer> getYears(double latitude, double longitude) {
-        UTMCode code = LatLongParser.parse(latitude, longitude);
-        return getYears(code);
-    }
-
-    /**
-     * Returns ordered list of LocalDate for a given latitude and longitude
-     * @param latitude
-     * @param longitude
-     * @return
-     */
-    public List<LocalDate> squareToDate(double latitude, double longitude) {
-        UTMCode code = LatLongParser.parse(latitude, longitude);
-        ListObjectsV2Request request1 = new ListObjectsV2Request();
-        request1.setBucketName(BUCKET);
-        request1.setPrefix(TILES + code.toString());
-
-        ListObjectsV2Result list = client.listObjectsV2(request1);
-        return DateParser.parse(list.getObjectSummaries());
-    }
-
-    private static String stripPrefixAnsSlash(String prefix, String value) {
-        String strippedPrefix = value.substring(prefix.length());
-        return strippedPrefix.substring(0, strippedPrefix.length() - 1);
-    }
+    List<LocalDate> squareToDate(double latitude, double longitude);
 }

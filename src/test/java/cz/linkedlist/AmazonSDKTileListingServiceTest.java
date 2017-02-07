@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Macko <https://github.com/LinkedList>.
  */
-public class TileListingServiceTest {
+public class AmazonSDKTileListingServiceTest {
 
     private TileListingService service;
 
@@ -34,7 +34,7 @@ public class TileListingServiceTest {
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new TileListingService(client);
+        service = new AmazonSDKTileListingService(client);
 
         Set<Integer> years = service.getYears(code);
 
@@ -56,7 +56,7 @@ public class TileListingServiceTest {
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new TileListingService(client);
+        service = new AmazonSDKTileListingService(client);
 
         Set<Integer> months = service.getMonths(code, 2015);
 
@@ -78,7 +78,7 @@ public class TileListingServiceTest {
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new TileListingService(client);
+        service = new AmazonSDKTileListingService(client);
 
         Set<Integer> days = service.getDays(code, 2015, 1);
 
@@ -99,7 +99,7 @@ public class TileListingServiceTest {
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new TileListingService(client);
+        service = new AmazonSDKTileListingService(client);
 
         Set<Integer> dataSets = service.getDataSets(code, 2015, 1, 15);
 
@@ -116,7 +116,7 @@ public class TileListingServiceTest {
         ListObjectsV2Result list = new ListObjectsV2Result();
         list.setKeyCount(1);
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
-        service = new TileListingService(client);
+        service = new AmazonSDKTileListingService(client);
 
         assertThat(service.exists(tileSet), is(true));
     }
@@ -128,7 +128,7 @@ public class TileListingServiceTest {
         ListObjectsV2Result list = new ListObjectsV2Result();
         list.setKeyCount(0);
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
-        service = new TileListingService(client);
+        service = new AmazonSDKTileListingService(client);
 
         assertThat(service.exists(tileSet), is(false));
     }
