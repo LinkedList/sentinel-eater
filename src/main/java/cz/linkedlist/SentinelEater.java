@@ -21,6 +21,9 @@ public class SentinelEater implements CommandLineRunner {
     @Autowired
 	private TileListingService tileListingService;
 
+	@Autowired
+	private TileDownloader tileDownloader;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SentinelEater.class, args).close();
 	}
@@ -49,7 +52,8 @@ public class SentinelEater implements CommandLineRunner {
 //		}
 
 		TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 0);
-		System.out.println(tileListingService.exists(tileSet));
-		System.out.println(tileListingService.getFolderContents(tileSet));
+//		System.out.println(tileListingService.exists(tileSet));
+//		System.out.println(tileListingService.getFolderContents(tileSet));
+		tileDownloader.downBand(tileSet, 1);
 	}
 }
