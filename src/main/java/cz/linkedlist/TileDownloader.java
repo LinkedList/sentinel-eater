@@ -11,4 +11,6 @@ public interface TileDownloader {
 
     void downTileInfo(TileSet tileSet);
 
+    void downMetadata(TileSet tileSet);
+
 }

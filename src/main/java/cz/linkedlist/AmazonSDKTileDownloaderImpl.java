@@ -20,6 +20,7 @@ import static cz.linkedlist.SentinelEater.BUCKET;
  */
 @Service
 @RequiredArgsConstructor
+@Async
 public class AmazonSDKTileDownloaderImpl implements TileDownloader {
 
     private static final String TMP = "/tmp/sentinel/";
@@ -27,35 +28,42 @@ public class AmazonSDKTileDownloaderImpl implements TileDownloader {
     private final TileListingService listingService;
 
     @Override
-    @Async
     public void downBand(TileSet tileSet, int band) {
-        if(!listingService.exists(tileSet)) {
-            throw new RuntimeException("I cannot download something, that doesn't exist, sorry. TileSet: " + tileSet);
-        }
-        tileSet.getBand(band).map(s -> {
-            GetObjectRequest request = new GetObjectRequest(BUCKET, s);
-            File file = new File(TMP + s.replace("/", "_"));
-            try(
-                    S3Object s3Object = client.getObject(request);
-                    FileOutputStream fos = new FileOutputStream(file);
-                    S3ObjectInputStream objectInputStream = s3Object.getObjectContent()
-            ) {
-                IOUtils.copy(objectInputStream, fos);
-            } catch (IOException ex) {
-                throw new RuntimeException("There was a problem downloading object from bucket", ex);
-            }
-            return file;
-        }).orElseThrow(() -> new RuntimeException("I am sorry, cannot download band: " + band));
+        tileSet.band(band)
+                .map(s -> down(tileSet, s))
+                .orElseThrow(() -> new RuntimeException("I am sorry, cannot download band: " + band));
     }
 
     @Override
     public void downProductInfo(TileSet tileSet) {
-        throw new UnsupportedOperationException();
+        down(tileSet, tileSet.productInfo());
     }
 
     @Override
     public void downTileInfo(TileSet tileSet) {
-        throw new UnsupportedOperationException();
+        down(tileSet, tileSet.tileInfo());
     }
 
+    @Override
+    public void downMetadata(TileSet tileSet) {
+        down(tileSet, tileSet.metadata());
+    }
+
+    private File down(TileSet tileSet, String what) {
+        if(!listingService.exists(tileSet)) {
+            throw new RuntimeException("I cannot download something, that doesn't exist, sorry. TileSet: " + tileSet);
+        }
+        GetObjectRequest request = new GetObjectRequest(BUCKET, what);
+        File file = new File(TMP + what.replace("/", "_"));
+        try(
+                S3Object s3Object = client.getObject(request);
+                FileOutputStream fos = new FileOutputStream(file);
+                S3ObjectInputStream objectInputStream = s3Object.getObjectContent()
+        ) {
+            IOUtils.copy(objectInputStream, fos);
+            return file;
+        } catch (IOException ex) {
+            throw new RuntimeException("There was a problem downloading object from bucket", ex);
+        }
+    }
 }

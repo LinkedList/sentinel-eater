@@ -22,11 +22,27 @@ public class TileSet {
         return "tiles/" + code.toString() + date.format(DATE_FORMAT) + setOrder + "/";
     }
 
-    public Optional<String> getBand(int band) {
+    public Optional<String> band(int band) {
         if(band < 1 || band > 12) {
             return Optional.empty();
         } else {
             return Optional.of(toString() + "B" + String.format("%02d", band) + ".jp2");
         }
+    }
+
+    public String band8A() {
+        return toString() + "B8A.jp2";
+    }
+
+    public String productInfo() {
+        return toString() + "productInfo.json";
+    }
+
+    public String tileInfo() {
+        return toString() + "tileInfo.json";
+    }
+
+    public String metadata() {
+        return toString() + "metadata.xml";
     }
 }

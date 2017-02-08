@@ -45,5 +45,8 @@ public class SentinelEater implements CommandLineRunner {
 //		System.out.println(tileListingService.exists(tileSet));
 //		System.out.println(tileListingService.getFolderContents(tileSet));
 		tileDownloader.downBand(tileSet, 1);
+		tileDownloader.downProductInfo(tileSet);
+		tileDownloader.downMetadata(tileSet);
+		tileDownloader.downTileInfo(tileSet);
 	}
 }
