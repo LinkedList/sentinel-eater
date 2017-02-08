@@ -3,10 +3,12 @@ package cz.linkedlist;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -131,5 +133,29 @@ public class AmazonSDKTileListingServiceTest {
         service = new AmazonSDKTileListingService(client);
 
         assertThat(service.exists(tileSet), is(false));
+    }
+
+    @Test
+    public void testAvailableDatesUtmCode() throws Exception {
+        AmazonS3Client client = mock(AmazonS3Client.class);
+        UTMCode code = new UTMCode(33,"U", "XQ");
+        ListObjectsV2Result list = new ListObjectsV2Result();
+        list.getObjectSummaries().add(summary("tiles/33/U/XQ/2016/8/31/0/B01.jp2"));
+        list.getObjectSummaries().add(summary("tiles/33/U/XQ/2017/8/30/0/B01.jp2"));
+        list.getObjectSummaries().add(summary("tiles/33/U/XQ/2017/2/14/0/B01.jp2"));
+        when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+        service = new AmazonSDKTileListingService(client);
+
+        List<LocalDate> dates = service.availableDates(code);
+        assertThat(dates, hasSize(3));
+        assertThat(dates, hasItem(LocalDate.of(2016, 8, 31)));
+        assertThat(dates, hasItem(LocalDate.of(2017, 8, 30)));
+        assertThat(dates, hasItem(LocalDate.of(2017, 2, 14)));
+    }
+
+    private S3ObjectSummary summary(String key) {
+        S3ObjectSummary summary = new S3ObjectSummary();
+        summary.setKey(key);
+        return summary;
     }
 }

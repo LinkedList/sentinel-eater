@@ -23,5 +23,7 @@ public interface TileListingService {
 
     Set<Integer> getYears(double latitude, double longitude);
 
-    List<LocalDate> squareToDate(double latitude, double longitude);
+    List<LocalDate> availableDates(double latitude, double longitude);
+
+    List<LocalDate> availableDates(UTMCode utmCode);
 }

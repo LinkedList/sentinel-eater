@@ -33,7 +33,7 @@ public class SentinelEater implements CommandLineRunner {
 //		Set<Integer> years = tileListingService.getYears(1.1, 2.2);
 //		System.out.println(years);
 
-//		List<LocalDate> dates = tileListingService.squareToDate(1.1, 2.2);
+//		List<LocalDate> dates = tileListingService.availableDates(1.1, 2.2);
 //		System.out.println(dates);
 
 //		Resource[] allFiles =  this.resourcePatternResolver.getResources("s3://"+BUCKET+"/tiles/36/M/TD/2017/1/**/*");
@@ -44,9 +44,10 @@ public class SentinelEater implements CommandLineRunner {
 		TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 0);
 //		System.out.println(tileListingService.exists(tileSet));
 //		System.out.println(tileListingService.getFolderContents(tileSet));
-		tileDownloader.downBand(tileSet, 1);
-		tileDownloader.downProductInfo(tileSet);
-		tileDownloader.downMetadata(tileSet);
-		tileDownloader.downTileInfo(tileSet);
+//		tileDownloader.downBand(tileSet, 1);
+//		tileDownloader.downProductInfo(tileSet);
+//		tileDownloader.downMetadata(tileSet);
+//		tileDownloader.downTileInfo(tileSet);
+		tileListingService.availableDates(tileSet.getCode());
 	}
 }
