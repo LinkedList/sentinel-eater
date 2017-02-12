@@ -16,4 +16,16 @@ public class UTMCodeTest {
         assertThat(code.toString(), is("36/M/TD/"));
     }
 
+    @Test
+    public void testOf() throws Exception {
+        UTMCode code = UTMCode.of("36MTD");
+        assertThat(code.toString(), is("36/M/TD/"));
+    }
+
+    @Test
+    public void testOfWithLeadingZero() throws Exception {
+        UTMCode code = UTMCode.of("06MTD");
+        assertThat(code.toString(), is("6/M/TD/"));
+    }
+
 }

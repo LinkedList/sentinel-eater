@@ -28,4 +28,12 @@ public class UTMCode {
     public String toString() {
         return gridZoneDesignator + "/" + latitudeBand + "/" + square + "/";
     }
+
+    public static UTMCode of(String code) {
+        Integer gridZone = Integer.valueOf(code.substring(0, 2));
+        String band = code.substring(2, 3);
+        String square = code.substring(3, 5);
+
+        return new UTMCode(gridZone, band, square);
+    }
 }
