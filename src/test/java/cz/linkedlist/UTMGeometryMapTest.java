@@ -7,11 +7,10 @@ import org.testng.annotations.Test;
 
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -44,5 +43,11 @@ public class UTMGeometryMapTest {
     public void getByRect() {
         Rectangle2D rect = new Rectangle2D.Double(-13.8632824087, 38.8433146054, 1.2800146119, 1.0080124955);
         assertThat(utmMap.get(rect), is(UTMCode.of("28SFH")));
+    }
+
+    @Test
+    public void testPointIntersects() {
+        Set<UTMCode> set = utmMap.intersects(-13.8732824087, 38.8433146054);
+        assertThat(set, hasItem(UTMCode.of("28SFG")));
     }
 }

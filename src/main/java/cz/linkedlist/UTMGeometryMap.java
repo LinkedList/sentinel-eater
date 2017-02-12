@@ -2,11 +2,15 @@ package cz.linkedlist;
 
 import org.springframework.core.io.Resource;
 
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -46,5 +50,14 @@ public class UTMGeometryMap {
 
     public UTMCode get(Rectangle2D rect) {
         return map.get(rect);
+    }
+
+    public Set<UTMCode> intersects(double x, double y) {
+        Point2D point = new Point2D.Double(x, y);
+        Line2D line = new Line2D.Double(point, point);
+        return map.entrySet().parallelStream()
+                .filter(e -> e.getKey().intersectsLine(line))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
     }
 }
