@@ -47,7 +47,13 @@ public class UTMGeometryMapTest {
 
     @Test
     public void testPointIntersects() {
-        Set<UTMCode> set = utmMap.intersects(-13.8732824087, 38.8433146054);
-        assertThat(set, hasItem(UTMCode.of("28SFG")));
+        Set<UTMCode> set = utmMap.intersects(-15.49, 40.22);
+        assertThat(set, hasItem(UTMCode.of("28TDK")));
+    }
+
+    @Test
+    public void testRectIntersects() {
+        Set<UTMCode> set = utmMap.intersects(-15.49, 40.22, 0.1, 0.1);
+        assertThat(set, hasItem(UTMCode.of("28TDK")));
     }
 }

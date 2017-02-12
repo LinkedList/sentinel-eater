@@ -60,4 +60,12 @@ public class UTMGeometryMap {
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toSet());
     }
+
+    public Set<UTMCode> intersects(double x, double y, double w, double h) {
+        Rectangle2D rect = new Rectangle2D.Double(x, y, w, h);
+        return map.entrySet().parallelStream()
+                .filter(e -> e.getKey().intersects(rect))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
+    }
 }
