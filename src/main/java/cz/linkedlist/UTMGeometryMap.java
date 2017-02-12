@@ -3,9 +3,8 @@ package cz.linkedlist;
 import org.springframework.core.io.Resource;
 
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,9 +24,7 @@ public class UTMGeometryMap {
      * @throws IOException
      */
     public UTMGeometryMap(Resource utmTilesFile) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(utmTilesFile.getInputStream()),1024);
-
-        br.lines().skip(1).forEach(s -> {
+        Files.lines(utmTilesFile.getFile().toPath()).skip(1).forEach(s -> {
             String[] line = s.split(";");
             UTMCode code = UTMCode.of(line[0]);
 
