@@ -1,11 +1,14 @@
 package cz.linkedlist;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.Resource;
 
+import java.awt.geom.Rectangle2D;
 import java.time.LocalDate;
 
 @SpringBootApplication
@@ -17,6 +20,9 @@ public class SentinelEater implements CommandLineRunner {
 
 //	@Autowired
 //	private ResourcePatternResolver resourcePatternResolver;
+
+	@Value("classpath:utm-tiles.csv")
+	private Resource utmTilesFile;
 
     @Autowired
 	private TileListingService tileListingService;
@@ -48,6 +54,11 @@ public class SentinelEater implements CommandLineRunner {
 //		tileDownloader.downProductInfo(tileSet);
 //		tileDownloader.downMetadata(tileSet);
 //		tileDownloader.downTileInfo(tileSet);
-		tileListingService.availableDates(tileSet.getCode());
+//		tileListingService.availableDates(tileSet.getCode());
+
+		UTMGeometryMap map = new UTMGeometryMap(utmTilesFile);
+		Rectangle2D geom = map.get(tileSet.getCode());
+		System.out.println(geom);
+		System.out.println(map.get(geom));
 	}
 }
