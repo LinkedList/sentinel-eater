@@ -23,6 +23,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<testng.version>6.10</testng.version>
+		<jts-core.version>1.14.0</jts-core.version>
+		<jts2geojson.version>0.10.0</jts2geojson.version>
 	</properties>
 
 	<dependencies>
@@ -41,6 +43,16 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.vividsolutions</groupId>
+			<artifactId>jts-core</artifactId>
+            <version>${jts-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wololo</groupId>
+			<artifactId>jts2geojson</artifactId>
+			<version>${jts2geojson.version}</version>
 		</dependency>
 
 		<!-- Test dependencies -->

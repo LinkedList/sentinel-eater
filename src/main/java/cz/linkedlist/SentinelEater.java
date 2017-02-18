@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.io.Resource;
 
-import java.awt.geom.Rectangle2D;
 import java.time.LocalDate;
 
 @SpringBootApplication
@@ -57,8 +56,5 @@ public class SentinelEater implements CommandLineRunner {
 //		tileListingService.availableDates(tileSet.getCode());
 
 		UTMGeometryMap map = new UTMGeometryMap(utmTilesFile);
-		Rectangle2D geom = map.get(tileSet.getCode());
-		System.out.println(geom);
-		System.out.println(map.get(geom));
 	}
 }
