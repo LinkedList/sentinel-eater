@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,6 +25,7 @@ import static cz.linkedlist.SentinelEater.TILES;
 public class AmazonSDKTileListingService implements TileListingService {
 
     private final AmazonS3Client client;
+    private final UTMGeometryMap utmMap;
 
     @Override
     public List<String> getFolderContents(TileSet tileSet) {
@@ -90,8 +93,12 @@ public class AmazonSDKTileListingService implements TileListingService {
 
     @Override
     public Set<Integer> getYears(double latitude, double longitude) {
-        UTMCode code = LatLongParser.parse(latitude, longitude);
-        return getYears(code);
+        Set<UTMCode> codes = utmMap.intersects(latitude, longitude);
+        Set<Integer> years = new HashSet<>();
+        for (UTMCode utmCode : codes) {
+            years.addAll(getYears(utmCode));
+        }
+        return years;
     }
 
     /**
@@ -102,8 +109,12 @@ public class AmazonSDKTileListingService implements TileListingService {
      */
     @Override
     public List<LocalDate> availableDates(double latitude, double longitude) {
-        UTMCode code = LatLongParser.parse(latitude, longitude);
-        return availableDates(code);
+        Set<UTMCode> codes = utmMap.intersects(latitude, longitude);
+        List<LocalDate> dates = new ArrayList<>();
+        for (UTMCode utmCode : codes) {
+            dates.addAll(availableDates(utmCode));
+        }
+        return dates;
     }
 
     @Override

@@ -35,8 +35,9 @@ public class AmazonSDKTileListingServiceTest {
                 SentinelEater.TILES + code.toString() + "2017/"
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+        UTMGeometryMap utmMap = mock(UTMGeometryMap.class);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, utmMap);
 
         Set<Integer> years = service.getYears(code);
 
@@ -57,8 +58,9 @@ public class AmazonSDKTileListingServiceTest {
                 SentinelEater.TILES + code.toString() + "2015/3/"
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+        UTMGeometryMap utmMap = mock(UTMGeometryMap.class);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, utmMap);
 
         Set<Integer> months = service.getMonths(code, 2015);
 
@@ -79,8 +81,9 @@ public class AmazonSDKTileListingServiceTest {
                 SentinelEater.TILES + code.toString() + "2015/1/25/"
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+        UTMGeometryMap utmMap = mock(UTMGeometryMap.class);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, utmMap);
 
         Set<Integer> days = service.getDays(code, 2015, 1);
 
@@ -100,8 +103,9 @@ public class AmazonSDKTileListingServiceTest {
                 SentinelEater.TILES + code.toString() + "2015/1/15/1/"
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+        UTMGeometryMap utmMap = mock(UTMGeometryMap.class);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, utmMap);
 
         Set<Integer> dataSets = service.getDataSets(code, 2015, 1, 15);
 
@@ -118,7 +122,9 @@ public class AmazonSDKTileListingServiceTest {
         ListObjectsV2Result list = new ListObjectsV2Result();
         list.setKeyCount(1);
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
-        service = new AmazonSDKTileListingService(client);
+        UTMGeometryMap utmMap = mock(UTMGeometryMap.class);
+
+        service = new AmazonSDKTileListingService(client, utmMap);
 
         assertThat(service.exists(tileSet), is(true));
     }
@@ -130,7 +136,9 @@ public class AmazonSDKTileListingServiceTest {
         ListObjectsV2Result list = new ListObjectsV2Result();
         list.setKeyCount(0);
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
-        service = new AmazonSDKTileListingService(client);
+        UTMGeometryMap utmMap = mock(UTMGeometryMap.class);
+
+        service = new AmazonSDKTileListingService(client, utmMap);
 
         assertThat(service.exists(tileSet), is(false));
     }
@@ -144,7 +152,9 @@ public class AmazonSDKTileListingServiceTest {
         list.getObjectSummaries().add(summary("tiles/33/U/XQ/2017/8/30/0/B01.jp2"));
         list.getObjectSummaries().add(summary("tiles/33/U/XQ/2017/2/14/0/B01.jp2"));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
-        service = new AmazonSDKTileListingService(client);
+        UTMGeometryMap utmMap = mock(UTMGeometryMap.class);
+
+        service = new AmazonSDKTileListingService(client, utmMap);
 
         List<LocalDate> dates = service.availableDates(code);
         assertThat(dates, hasSize(3));
