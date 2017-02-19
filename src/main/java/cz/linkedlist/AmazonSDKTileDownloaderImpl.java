@@ -35,6 +35,11 @@ public class AmazonSDKTileDownloaderImpl implements TileDownloader {
     }
 
     @Override
+    public void downBand8A(TileSet tileSet) {
+        down(tileSet, tileSet.band8A());
+    }
+
+    @Override
     public void downProductInfo(TileSet tileSet) {
         down(tileSet, tileSet.productInfo());
     }
