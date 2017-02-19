@@ -21,9 +21,5 @@ public interface TileListingService {
 
     Set<Integer> getDataSets(UTMCode code, int year, int month, int day);
 
-    Set<Integer> getYears(double latitude, double longitude);
-
-    List<LocalDate> availableDates(double latitude, double longitude);
-
     List<LocalDate> availableDates(UTMCode utmCode);
 }
