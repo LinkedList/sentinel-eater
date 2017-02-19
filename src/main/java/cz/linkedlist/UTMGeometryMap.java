@@ -1,7 +1,12 @@
 package cz.linkedlist;
 
-import com.vividsolutions.jts.geom.*;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import org.wololo.jts2geojson.GeoJSONReader;
 
 import java.io.IOException;
@@ -14,6 +19,7 @@ import java.util.stream.Collectors;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
+@Component
 public class UTMGeometryMap {
 
     private Map<Geometry, UTMCode> map = new HashMap<>();
@@ -28,8 +34,7 @@ public class UTMGeometryMap {
      * @param utmTilesFile
      * @throws IOException
      */
-    public UTMGeometryMap(Resource utmTilesFile) throws IOException {
-
+    public UTMGeometryMap(@Value("utm-tiles.csv") Resource utmTilesFile) throws IOException {
         Files.lines(utmTilesFile.getFile().toPath()).skip(1).forEach(s -> {
             String[] line = s.split(";");
             UTMCode code = UTMCode.of(line[0]);
