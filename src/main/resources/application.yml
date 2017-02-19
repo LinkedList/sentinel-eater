@@ -5,3 +5,5 @@ cloud:
       secretKey: #AWS SECRET KEY
     region:
       static: eu-central-1
+
+destinationFolder: /tmp/sentinel/

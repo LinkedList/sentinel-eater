@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,10 @@ import static cz.linkedlist.SentinelEater.BUCKET;
 @Async
 public class AmazonSDKTileDownloaderImpl implements TileDownloader {
 
-    private static final String TMP = "/tmp/sentinel/";
+    private static final String DESTINATION_FOLDER_PROP = "${destinationFolder}";
+
+    @Value(DESTINATION_FOLDER_PROP)
+    private String destinationFolder;
     private final AmazonS3Client client;
     private final TileListingService listingService;
 
@@ -55,11 +59,18 @@ public class AmazonSDKTileDownloaderImpl implements TileDownloader {
     }
 
     private File down(TileSet tileSet, String what) {
+        if(DESTINATION_FOLDER_PROP.equals(destinationFolder)) {
+            throw new RuntimeException("destinationFolder property has to be set before downloading");
+        }
+
         if(!listingService.exists(tileSet)) {
             throw new RuntimeException("I cannot download something, that doesn't exist, sorry. TileSet: " + tileSet);
         }
+
+        ensureFolderExists();
+
         GetObjectRequest request = new GetObjectRequest(BUCKET, what);
-        File file = new File(TMP + what.replace("/", "_"));
+        File file = new File(destinationFolder + what.replace("/", "_"));
         try(
                 S3Object s3Object = client.getObject(request);
                 FileOutputStream fos = new FileOutputStream(file);
@@ -70,5 +81,19 @@ public class AmazonSDKTileDownloaderImpl implements TileDownloader {
         } catch (IOException ex) {
             throw new RuntimeException("There was a problem downloading object from bucket", ex);
         }
+    }
+
+    private void ensureFolderExists() {
+        File destFolder = new File(destinationFolder);
+        if (destFolder.exists() && destFolder.isDirectory()) {
+            return;
+        }
+
+        final boolean success = destFolder.mkdirs();
+        if(success) {
+            return;
+        }
+
+        throw new RuntimeException("Cannot create necessary folder for downloading: " + destFolder);
     }
 }
