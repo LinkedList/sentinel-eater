@@ -125,7 +125,24 @@ public class AmazonSDKTileListingServiceTest {
     }
 
     @Test
-    public void testExistsNotExists() throws Exception {
+    public void testGetFolderContents() throws Exception {
+        AmazonS3Client client = mock(AmazonS3Client.class);
+        TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 1);
+        ListObjectsV2Result list = new ListObjectsV2Result();
+        list.getObjectSummaries().add(summary("tiles/33/U/XQ/2016/8/31/0/B01.jp2"));
+        list.getObjectSummaries().add(summary("tiles/33/U/XQ/2016/8/31/0/B02.jp2"));
+        list.getObjectSummaries().add(summary("tiles/33/U/XQ/2016/8/31/0/B03.jp2"));
+        when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
+
+        service = new AmazonSDKTileListingService(client);
+
+        assertThat(service.getFolderContents(tileSet), hasItem("tiles/33/U/XQ/2016/8/31/0/B01.jp2"));
+        assertThat(service.getFolderContents(tileSet), hasItem("tiles/33/U/XQ/2016/8/31/0/B02.jp2"));
+        assertThat(service.getFolderContents(tileSet), hasItem("tiles/33/U/XQ/2016/8/31/0/B03.jp2"));
+    }
+
+    @Test
+    public void testNotExists() throws Exception {
         AmazonS3Client client = mock(AmazonS3Client.class);
         TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 1);
         ListObjectsV2Result list = new ListObjectsV2Result();

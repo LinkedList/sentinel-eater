@@ -30,7 +30,7 @@ public class AmazonSDKTileListingService implements TileListingService {
         request.setDelimiter(null);
         ListObjectsV2Result list = client.listObjectsV2(request);
         List<String> objects = list.getObjectSummaries().stream()
-                .map(S3ObjectSummary::toString)
+                .map(S3ObjectSummary::getKey)
                 .collect(Collectors.toList());
         return objects;
     }
