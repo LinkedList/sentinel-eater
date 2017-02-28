@@ -10,6 +10,7 @@ import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -40,8 +41,21 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
     public void testGetYears() throws Exception {
         UTMCode code = UTMCode.of("36MTD");
         Set<Integer> years = service.getYears(code);
+        assertThat(years, hasSize(3));
         assertThat(years, hasItem(2015));
         assertThat(years, hasItem(2016));
         assertThat(years, hasItem(2017));
+    }
+
+    @Test
+    public void testGetMonths() throws Exception {
+        UTMCode code = UTMCode.of("36MTD");
+        Set<Integer> months = service.getMonths(code, 2015);
+        assertThat(months, hasSize(5));
+        assertThat(months, hasItem(10));
+        assertThat(months, hasItem(11));
+        assertThat(months, hasItem(12));
+        assertThat(months, hasItem(7));
+        assertThat(months, hasItem(9));
     }
 }

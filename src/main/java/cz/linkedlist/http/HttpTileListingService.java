@@ -47,7 +47,8 @@ public class HttpTileListingService implements TileListingService {
 
     @Override
     public Set<Integer> getMonths(UTMCode code, int year) {
-        return null;
+        String prefix = TILES + code.toString() + year + "/";
+        return getPossibleValues(prefix);
     }
 
     @Override
