@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,9 +30,9 @@ public class ListBucketResult {
     @XmlElement(name = "IsTruncated")
     private boolean truncated;
     @XmlElement(name = "Contents")
-    private List<Contents> contents;
+    private List<Contents> contents = new ArrayList<>();
     @XmlElement(name = "CommonPrefixes")
-    private List<CommonPrefixes> commonPrefixes;
+    private List<CommonPrefixes> commonPrefixes = new ArrayList<>();
 }
 
 /*

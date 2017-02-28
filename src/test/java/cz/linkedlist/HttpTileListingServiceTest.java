@@ -27,4 +27,10 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
         TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 0);
         assertThat(service.exists(tileSet), is(true));
     }
+
+    @Test
+    public void testNotExists() throws Exception {
+        TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 3);
+        assertThat(service.exists(tileSet), is(false));
+    }
 }
