@@ -1,9 +1,13 @@
-package cz.linkedlist;
+package cz.linkedlist.amazon;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import cz.linkedlist.DateParser;
+import cz.linkedlist.TileListingService;
+import cz.linkedlist.TileSet;
+import cz.linkedlist.UTMCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +22,7 @@ import static cz.linkedlist.SentinelEater.TILES;
 /**
  * @author Martin Macko <https://github.com/LinkedList>.
  */
-@Service
+@Service("amazon")
 @RequiredArgsConstructor
 public class AmazonSDKTileListingService implements TileListingService {
 

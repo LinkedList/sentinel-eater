@@ -1,11 +1,14 @@
-package cz.linkedlist;
+package cz.linkedlist.amazon;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import lombok.RequiredArgsConstructor;
+import cz.linkedlist.TileDownloader;
+import cz.linkedlist.TileListingService;
+import cz.linkedlist.TileSet;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -20,7 +23,6 @@ import static cz.linkedlist.SentinelEater.BUCKET;
  * @author Martin Macko <https://github.com/LinkedList>
  */
 @Service
-@RequiredArgsConstructor
 @Async
 public class AmazonSDKTileDownloaderImpl implements TileDownloader {
 
@@ -30,6 +32,11 @@ public class AmazonSDKTileDownloaderImpl implements TileDownloader {
     private String destinationFolder;
     private final AmazonS3Client client;
     private final TileListingService listingService;
+
+    public AmazonSDKTileDownloaderImpl(AmazonS3Client client, @Qualifier("amazon") TileListingService listingService) {
+        this.client = client;
+        this.listingService = listingService;
+    }
 
     @Override
     public void downBand(TileSet tileSet, int band) {

@@ -1,5 +1,6 @@
 package cz.linkedlist;
 
+import cz.linkedlist.http.HttpTileListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -7,7 +8,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -23,7 +23,7 @@ public class SentinelEater implements CommandLineRunner {
 	private UTMGeometryMap utmGeometryMap;
 
     @Autowired
-	private TileListingService tileListingService;
+	private HttpTileListingService tileListingService;
 
 	@Autowired
 	private TileDownloader tileDownloader;
@@ -48,13 +48,15 @@ public class SentinelEater implements CommandLineRunner {
 		TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 0);
 //		System.out.println(tileListingService.exists(tileSet));
 //		System.out.println(tileListingService.getFolderContents(tileSet));
-		tileDownloader.downBand(tileSet, 1);
+//		tileDownloader.downBand(tileSet, 1);
 //		tileDownloader.downProductInfo(tileSet);
 //		tileDownloader.downMetadata(tileSet);
 //		tileDownloader.downTileInfo(tileSet);
 //		tileListingService.availableDates(tileSet.getCode());
 
-		Set<UTMCode> intersects = utmGeometryMap.intersects(-15.49, 40.22);
-		System.out.println(intersects);
+//		Set<UTMCode> intersects = utmGeometryMap.intersects(-15.49, 40.22);
+//		System.out.println(intersects);
+
+		System.out.println(tileListingService.exists(tileSet));
 	}
 }
