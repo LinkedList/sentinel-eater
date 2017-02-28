@@ -58,4 +58,13 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
         assertThat(months, hasItem(7));
         assertThat(months, hasItem(9));
     }
+
+    @Test
+    public void testGetDays() throws Exception {
+        UTMCode code = UTMCode.of("36MTD");
+        Set<Integer> days = service.getDays(code, 2015, 10);
+        assertThat(days, hasSize(2));
+        assertThat(days, hasItem(23));
+        assertThat(days, hasItem(3));
+    }
 }
