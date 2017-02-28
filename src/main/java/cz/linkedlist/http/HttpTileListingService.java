@@ -25,10 +25,6 @@ public class HttpTileListingService implements TileListingService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public HttpTileListingService() {
-        //restTemplate.getMessageConverters().add(new );
-    }
-
     @Override
     public List<String> getFolderContents(TileSet tileSet) {
         ListBucketResult result = restTemplate.getForObject(EXISTS_URL + tileSet.toString(), ListBucketResult.class);
