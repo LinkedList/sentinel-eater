@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -74,5 +75,23 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
         Set<Integer> dataSets = service.getDataSets(code, 2015, 10, 23);
         assertThat(dataSets, hasSize(1));
         assertThat(dataSets, hasItem(0));
+    }
+
+    @Test
+    public void testGetFolderContents() throws Exception {
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2015, 10, 23), 0);
+        List<String> folderContents = service.getFolderContents(tileSet);
+
+        assertAllBands(folderContents);
+        assertThat(folderContents, hasItem("tiles/36/M/TD/2015/10/23/0/metadata.xml"));
+        assertThat(folderContents, hasItem("tiles/36/M/TD/2015/10/23/0/productInfo.json"));
+        assertThat(folderContents, hasItem("tiles/36/M/TD/2015/10/23/0/tileInfo.json"));
+    }
+
+    private void assertAllBands(List<String> contents) {
+        for(int i = 1; i<=12; i++) {
+            assertThat(contents, hasItem("tiles/36/M/TD/2015/10/23/0/B" + String.format("%02d", i) + ".jp2"));
+        }
+        assertThat(contents, hasItem("tiles/36/M/TD/2015/10/23/0/B8A.jp2"));
     }
 }

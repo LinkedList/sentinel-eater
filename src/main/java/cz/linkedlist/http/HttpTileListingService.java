@@ -3,6 +3,7 @@ package cz.linkedlist.http;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
+import cz.linkedlist.http.xml.Contents;
 import cz.linkedlist.http.xml.ListBucketResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -30,7 +31,8 @@ public class HttpTileListingService implements TileListingService {
 
     @Override
     public List<String> getFolderContents(TileSet tileSet) {
-        return null;
+        ListBucketResult result = restTemplate.getForObject(EXISTS_URL + tileSet.toString(), ListBucketResult.class);
+        return result.getContents().stream().map(Contents::getKey).collect(Collectors.toList());
     }
 
     @Override
