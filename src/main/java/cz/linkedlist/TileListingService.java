@@ -22,4 +22,9 @@ public interface TileListingService {
     Set<Integer> getDataSets(UTMCode code, int year, int month, int day);
 
     List<LocalDate> availableDates(UTMCode utmCode);
+
+    default String stripPrefixAnsSlash(String prefix, String value) {
+        String strippedPrefix = value.substring(prefix.length());
+        return strippedPrefix.substring(0, strippedPrefix.length() - 1);
+    }
 }

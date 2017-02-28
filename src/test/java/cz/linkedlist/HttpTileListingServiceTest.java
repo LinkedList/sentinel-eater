@@ -6,8 +6,10 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -32,5 +34,14 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
     public void testNotExists() throws Exception {
         TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 3);
         assertThat(service.exists(tileSet), is(false));
+    }
+
+    @Test
+    public void testGetYears() throws Exception {
+        UTMCode code = UTMCode.of("36MTD");
+        Set<Integer> years = service.getYears(code);
+        assertThat(years, hasItem(2015));
+        assertThat(years, hasItem(2016));
+        assertThat(years, hasItem(2017));
     }
 }

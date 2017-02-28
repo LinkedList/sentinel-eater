@@ -100,9 +100,4 @@ public class AmazonSDKTileListingService implements TileListingService {
         ListObjectsV2Result list = client.listObjectsV2(request1);
         return DateParser.parse(list.getObjectSummaries());
     }
-
-    private static String stripPrefixAnsSlash(String prefix, String value) {
-        String strippedPrefix = value.substring(prefix.length());
-        return strippedPrefix.substring(0, strippedPrefix.length() - 1);
-    }
 }

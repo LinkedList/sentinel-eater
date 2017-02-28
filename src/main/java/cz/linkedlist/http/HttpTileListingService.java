@@ -10,6 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static cz.linkedlist.SentinelEater.TILES;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -33,12 +36,13 @@ public class HttpTileListingService implements TileListingService {
     @Override
     public boolean exists(TileSet tileSet) {
         ListBucketResult result = restTemplate.getForObject(EXISTS_URL + tileSet.toString(), ListBucketResult.class);
-        return !result.getCommonPrefixes().isEmpty();
+        return !result.getContents().isEmpty();
     }
 
     @Override
     public Set<Integer> getYears(UTMCode code) {
-        return null;
+        String prefix = TILES + code.toString();
+        return getPossibleValues(prefix);
     }
 
     @Override
@@ -59,5 +63,12 @@ public class HttpTileListingService implements TileListingService {
     @Override
     public List<LocalDate> availableDates(UTMCode utmCode) {
         return null;
+    }
+
+    private Set<Integer> getPossibleValues(final String prefix) {
+        ListBucketResult result = restTemplate.getForObject(EXISTS_URL + prefix, ListBucketResult.class);
+        return result.getCommonPrefixes().stream()
+                .map(cp -> Integer.valueOf(stripPrefixAnsSlash(prefix, cp.getPrefix())))
+                .collect(Collectors.toSet());
     }
 }
