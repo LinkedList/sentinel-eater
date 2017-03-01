@@ -98,6 +98,6 @@ public class AmazonSDKTileListingService implements TileListingService {
         request1.setBucketName(BUCKET);
         request1.setPrefix(TILES + utmCode);
         ListObjectsV2Result list = client.listObjectsV2(request1);
-        return DateParser.parse(list.getObjectSummaries());
+        return DateParser.parseS3(list.getObjectSummaries());
     }
 }

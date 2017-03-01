@@ -1,5 +1,6 @@
 package cz.linkedlist.http;
 
+import cz.linkedlist.DateParser;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
@@ -22,6 +23,7 @@ import static cz.linkedlist.SentinelEater.TILES;
 public class HttpTileListingService implements TileListingService {
 
     private static final String EXISTS_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/?delimiter=/&prefix=";
+    private static final String NO_DELIMITER_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/?prefix=";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -63,7 +65,8 @@ public class HttpTileListingService implements TileListingService {
 
     @Override
     public List<LocalDate> availableDates(UTMCode utmCode) {
-        return null;
+        ListBucketResult result = restTemplate.getForObject(NO_DELIMITER_URL + TILES + utmCode, ListBucketResult.class);
+        return DateParser.parseHttp(result);
     }
 
     private Set<Integer> getPossibleValues(final String prefix) {

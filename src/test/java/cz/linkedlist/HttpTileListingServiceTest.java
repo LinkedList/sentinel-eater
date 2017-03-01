@@ -88,6 +88,14 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
         assertThat(folderContents, hasItem("tiles/36/M/TD/2015/10/23/0/tileInfo.json"));
     }
 
+    @Test
+    public void testAvailableDates() throws Exception {
+        UTMCode code = UTMCode.of("20MMN");
+        List<LocalDate> localDates = service.availableDates(code);
+        assertThat(localDates, hasSize(1));
+        assertThat(localDates, hasItem(LocalDate.of(2015, 12, 6)));
+    }
+
     private void assertAllBands(List<String> contents) {
         for(int i = 1; i<=12; i++) {
             assertThat(contents, hasItem("tiles/36/M/TD/2015/10/23/0/B" + String.format("%02d", i) + ".jp2"));

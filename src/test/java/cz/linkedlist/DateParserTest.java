@@ -24,7 +24,7 @@ public class DateParserTest {
         List<S3ObjectSummary> objects = new ArrayList<>();
         objects.add(obj);
 
-        List<LocalDate> dates = DateParser.parse(objects);
+        List<LocalDate> dates = DateParser.parseS3(objects);
         assertThat(dates, hasItem(LocalDate.of(2017, 1, 15)));
     }
 
@@ -35,7 +35,7 @@ public class DateParserTest {
         List<S3ObjectSummary> objects = new ArrayList<>();
         objects.add(obj);
 
-        List<LocalDate> dates = DateParser.parse(objects);
+        List<LocalDate> dates = DateParser.parseS3(objects);
         assertThat(dates, empty());
     }
 }
