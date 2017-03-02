@@ -1,5 +1,6 @@
 package cz.linkedlist;
 
+import cz.linkedlist.http.HttpTileDownloaderImpl;
 import cz.linkedlist.http.HttpTileListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -26,7 +27,7 @@ public class SentinelEater implements CommandLineRunner {
 	private HttpTileListingService tileListingService;
 
 	@Autowired
-	private TileDownloader tileDownloader;
+	private HttpTileDownloaderImpl tileDownloader;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SentinelEater.class, args).close();
@@ -48,7 +49,7 @@ public class SentinelEater implements CommandLineRunner {
 		TileSet tileSet = new TileSet(new UTMCode(36,"M", "TD"), LocalDate.of(2016, 8, 31), 0);
 //		System.out.println(tileListingService.exists(tileSet));
 //		System.out.println(tileListingService.getFolderContents(tileSet));
-//		tileDownloader.downBand(tileSet, 1);
+		tileDownloader.downBand(tileSet, 1);
 //		tileDownloader.downProductInfo(tileSet);
 //		tileDownloader.downMetadata(tileSet);
 //		tileDownloader.downTileInfo(tileSet);
@@ -56,7 +57,5 @@ public class SentinelEater implements CommandLineRunner {
 
 //		Set<UTMCode> intersects = utmGeometryMap.intersects(-15.49, 40.22);
 //		System.out.println(intersects);
-
-		System.out.println(tileListingService.exists(tileSet));
 	}
 }
