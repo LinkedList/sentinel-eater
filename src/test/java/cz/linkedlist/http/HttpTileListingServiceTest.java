@@ -1,6 +1,7 @@
-package cz.linkedlist;
+package cz.linkedlist.http;
 
-import cz.linkedlist.http.HttpTileListingService;
+import cz.linkedlist.TileSet;
+import cz.linkedlist.UTMCode;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -10,9 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -28,7 +27,7 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
 
     @Test
     public void testExists() throws Exception {
-        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31), 0);
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
         assertThat(service.exists(tileSet), is(true));
     }
 
@@ -79,7 +78,7 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
 
     @Test
     public void testGetFolderContents() throws Exception {
-        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2015, 10, 23), 0);
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2015, 10, 23));
         List<String> folderContents = service.getFolderContents(tileSet);
 
         assertAllBands(folderContents);

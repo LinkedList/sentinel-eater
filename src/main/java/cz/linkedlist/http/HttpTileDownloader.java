@@ -16,7 +16,7 @@ import java.net.URL;
 /**
  * @author Martin Macko <https://github.com/LinkedList>.
  */
-@Service
+@Service("http-downloader")
 @Async
 public class HttpTileDownloader implements TileDownloader {
     private static final String DOWN_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/";
@@ -25,7 +25,7 @@ public class HttpTileDownloader implements TileDownloader {
     private String destinationFolder;
     private final TileListingService listingService;
 
-    private HttpTileDownloader(@Qualifier("http") TileListingService tileListingService) {
+    public HttpTileDownloader(@Qualifier("http-listing") TileListingService tileListingService) {
         this.listingService = tileListingService;
     }
 
@@ -74,5 +74,9 @@ public class HttpTileDownloader implements TileDownloader {
             throw new RuntimeException("There was a problem downloading object from bucket", O_o);
         }
         return file;
+    }
+
+    public void setDestinationFolder(String destinationFolder) {
+        this.destinationFolder = destinationFolder;
     }
 }

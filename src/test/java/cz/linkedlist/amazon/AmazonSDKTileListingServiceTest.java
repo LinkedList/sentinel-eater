@@ -1,9 +1,13 @@
-package cz.linkedlist;
+package cz.linkedlist.amazon;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import cz.linkedlist.SentinelEater;
+import cz.linkedlist.TileListingService;
+import cz.linkedlist.TileSet;
+import cz.linkedlist.UTMCode;
 import cz.linkedlist.amazon.AmazonSDKTileListingService;
 import org.testng.annotations.Test;
 

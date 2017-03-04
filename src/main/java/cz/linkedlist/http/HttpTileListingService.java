@@ -19,7 +19,7 @@ import static cz.linkedlist.SentinelEater.TILES;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-@Service("http")
+@Service("http-listing")
 public class HttpTileListingService implements TileListingService {
 
     private static final String EXISTS_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/?delimiter=/&prefix=";

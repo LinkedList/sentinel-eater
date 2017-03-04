@@ -22,7 +22,7 @@ import static cz.linkedlist.SentinelEater.BUCKET;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-@Service
+@Service("amazon-downloader")
 @Async
 public class AmazonSDKTileDownloader implements TileDownloader {
 
@@ -31,7 +31,7 @@ public class AmazonSDKTileDownloader implements TileDownloader {
     private final AmazonS3Client client;
     private final TileListingService listingService;
 
-    public AmazonSDKTileDownloader(AmazonS3Client client, @Qualifier("amazon") TileListingService listingService) {
+    public AmazonSDKTileDownloader(AmazonS3Client client, @Qualifier("amazon-listing") TileListingService listingService) {
         this.client = client;
         this.listingService = listingService;
     }

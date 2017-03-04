@@ -22,7 +22,7 @@ import static cz.linkedlist.SentinelEater.TILES;
 /**
  * @author Martin Macko <https://github.com/LinkedList>.
  */
-@Service("amazon")
+@Service("amazon-listing")
 @RequiredArgsConstructor
 public class AmazonSDKTileListingService implements TileListingService {
 

@@ -25,6 +25,15 @@ public class TileSetTest {
     }
 
     @Test
+    public void testDefaultBand() throws Exception {
+        UTMCode code = new UTMCode(28, "C", "DD");
+        LocalDate date = LocalDate.of(2017, 3, 10);
+
+        TileSet tileSet = new TileSet(code, date);
+
+        assertThat(tileSet.toString(), is("tiles/28/C/DD/2017/3/10/0/"));
+    }
+    @Test
     public void testToStringsingleDay() throws Exception {
         UTMCode code = new UTMCode(28, "C", "DD");
         LocalDate date = LocalDate.of(2017, 3, 9);
