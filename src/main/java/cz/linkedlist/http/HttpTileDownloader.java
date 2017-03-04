@@ -19,7 +19,6 @@ import java.net.URL;
 @Service("http-downloader")
 @Async
 public class HttpTileDownloader implements TileDownloader {
-    private static final String DOWN_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/";
 
     @Value(DESTINATION_FOLDER_PROP)
     private String destinationFolder;

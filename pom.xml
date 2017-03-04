@@ -26,6 +26,7 @@
 		<jts-core.version>1.14.0</jts-core.version>
 		<jts2geojson.version>0.10.0</jts2geojson.version>
 		<spring-web.version>4.3.6.RELEASE</spring-web.version>
+		<jackson-datatype-jts.version>2.4</jackson-datatype-jts.version>
 	</properties>
 
 	<dependencies>
@@ -55,6 +56,16 @@
 			<artifactId>jts2geojson</artifactId>
 			<version>${jts2geojson.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring-web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.bedatadriven</groupId>
+			<artifactId>jackson-datatype-jts</artifactId>
+			<version>${jackson-datatype-jts.version}</version>
+		</dependency>
 
 		<!-- Test dependencies -->
 		<dependency>
@@ -68,12 +79,7 @@
 			<version>${testng.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring-web.version}</version>
-		</dependency>
-	</dependencies>
+    </dependencies>
 
 	<dependencyManagement>
 		<dependencies>
