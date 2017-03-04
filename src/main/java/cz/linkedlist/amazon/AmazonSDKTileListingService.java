@@ -24,6 +24,7 @@ import static cz.linkedlist.SentinelEater.TILES;
  */
 @Service("amazon-listing")
 @RequiredArgsConstructor
+@ConditionalOnExistingAmazonClient(AmazonS3Client.class)
 public class AmazonSDKTileListingService implements TileListingService {
 
     private final AmazonS3Client client;

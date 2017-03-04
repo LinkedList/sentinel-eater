@@ -2,6 +2,8 @@ package cz.linkedlist.http;
 
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
+import cz.linkedlist.config.SpringTestNG;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -16,14 +18,10 @@ import static org.hamcrest.Matchers.*;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests {
+public class HttpTileListingServiceTest extends SpringTestNG {
 
+    @Autowired
     private HttpTileListingService service;
-
-    @BeforeTest
-    public void init() {
-        service = new HttpTileListingService();
-    }
 
     @Test
     public void testExists() throws Exception {

@@ -24,6 +24,7 @@ import static cz.linkedlist.SentinelEater.BUCKET;
  */
 @Service("amazon-downloader")
 @Async
+@ConditionalOnExistingAmazonClient(AmazonS3Client.class)
 public class AmazonSDKTileDownloader implements TileDownloader {
 
     @Value(DESTINATION_FOLDER_PROP)

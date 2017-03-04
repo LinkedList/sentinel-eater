@@ -2,6 +2,8 @@ package cz.linkedlist.http;
 
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
+import cz.linkedlist.config.SpringTestNG;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -16,15 +18,10 @@ import static org.testng.Assert.assertTrue;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-public class HttpTileDownloaderTest extends AbstractTestNGSpringContextTests {
+public class HttpTileDownloaderTest extends SpringTestNG {
 
-    private HttpTileListingService listingService = new HttpTileListingService();
-    private HttpTileDownloader downloader = new HttpTileDownloader(listingService);
-
-    @BeforeTest
-    public void init() {
-        downloader.setDestinationFolder("/tmp/");
-    }
+    @Autowired
+    private HttpTileDownloader downloader;
 
     @Test
     public void testDownloadBand() throws Exception {
