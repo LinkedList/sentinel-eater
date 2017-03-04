@@ -1,6 +1,6 @@
 package cz.linkedlist;
 
-import cz.linkedlist.http.HttpTileDownloaderImpl;
+import cz.linkedlist.http.HttpTileDownloader;
 import cz.linkedlist.http.HttpTileListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,7 +27,7 @@ public class SentinelEater implements CommandLineRunner {
 	private HttpTileListingService tileListingService;
 
 	@Autowired
-	private HttpTileDownloaderImpl tileDownloader;
+	private HttpTileDownloader tileDownloader;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SentinelEater.class, args).close();
