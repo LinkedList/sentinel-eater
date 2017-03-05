@@ -3,6 +3,7 @@ package cz.linkedlist.http;
 import cz.linkedlist.TileInfoService;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
+import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -25,14 +26,21 @@ public class HttpTileInfoService implements TileInfoService {
     }
 
     @Override
-    public TileInfo get(TileSet tileSet) {
+    public TileInfo getTileInfo(TileSet tileSet) {
         if(!listingService.exists(tileSet)) {
             throw new RuntimeException("TileSet [" + tileSet + "] doesn't exist. Sorry.");
         }
 
-        TileInfo tileInfo = rest.getForObject(DOWN_URL + tileSet.tileInfo(), TileInfo.class);
+        return rest.getForObject(DOWN_URL + tileSet.tileInfo(), TileInfo.class);
+    }
 
-        return tileInfo;
+    @Override
+    public ProductInfo getProductInfo(TileSet tileSet) {
+        if(!listingService.exists(tileSet)) {
+            throw new RuntimeException("TileSet [" + tileSet + "] doesn't exist. Sorry.");
+        }
+
+        return rest.getForObject(DOWN_URL + tileSet.productInfo(), ProductInfo.class);
     }
 
 }
