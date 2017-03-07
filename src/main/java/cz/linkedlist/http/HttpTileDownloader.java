@@ -6,6 +6,7 @@ import cz.linkedlist.TileSet;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.net.URL;
  */
 @Service("http-downloader")
 @Async
+@Primary
 public class HttpTileDownloader implements TileDownloader {
 
     @Value(DESTINATION_FOLDER_PROP)

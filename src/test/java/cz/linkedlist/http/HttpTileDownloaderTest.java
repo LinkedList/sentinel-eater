@@ -1,27 +1,30 @@
 package cz.linkedlist.http;
 
+import cz.linkedlist.TileDownloader;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
-import cz.linkedlist.config.SpringTestNG;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-public class HttpTileDownloaderTest extends SpringTestNG {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class HttpTileDownloaderTest {
 
     @Autowired
-    private HttpTileDownloader downloader;
+    private TileDownloader downloader;
 
     @Test
     public void testDownloadBand() throws Exception {

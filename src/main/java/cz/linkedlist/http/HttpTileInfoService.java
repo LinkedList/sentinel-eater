@@ -5,6 +5,7 @@ import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.info.TileInfo;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,6 +15,7 @@ import static cz.linkedlist.TileDownloader.DOWN_URL;
  * @author Martin Macko <https://github.com/LinkedList>
  */
 @Service
+@Primary
 public class HttpTileInfoService implements TileInfoService {
 
     private final TileListingService listingService;

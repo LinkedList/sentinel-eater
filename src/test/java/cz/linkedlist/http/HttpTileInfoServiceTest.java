@@ -3,16 +3,14 @@ package cz.linkedlist.http;
 import cz.linkedlist.TileInfoService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
-import cz.linkedlist.config.SpringTestNG;
 import cz.linkedlist.info.TileInfo;
-import org.hamcrest.CoreMatchers;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -21,7 +19,9 @@ import static org.hamcrest.Matchers.notNullValue;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-public class HttpTileInfoServiceTest extends SpringTestNG {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class HttpTileInfoServiceTest {
 
     @Autowired
     private TileInfoService service;

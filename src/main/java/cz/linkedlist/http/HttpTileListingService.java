@@ -6,6 +6,7 @@ import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
 import cz.linkedlist.http.xml.Contents;
 import cz.linkedlist.http.xml.ListBucketResult;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,6 +21,7 @@ import static cz.linkedlist.SentinelEater.TILES;
  * @author Martin Macko <https://github.com/LinkedList>
  */
 @Service("http-listing")
+@Primary
 public class HttpTileListingService implements TileListingService {
 
     private static final String EXISTS_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/?delimiter=/&prefix=";

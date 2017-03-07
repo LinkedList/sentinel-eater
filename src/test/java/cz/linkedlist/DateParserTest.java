@@ -2,7 +2,7 @@ package cz.linkedlist;
 
 
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

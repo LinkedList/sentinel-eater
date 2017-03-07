@@ -8,8 +8,7 @@ import cz.linkedlist.SentinelEater;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
-import cz.linkedlist.amazon.AmazonSDKTileListingService;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.Arrays;
