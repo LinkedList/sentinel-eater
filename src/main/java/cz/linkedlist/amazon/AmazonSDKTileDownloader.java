@@ -64,10 +64,6 @@ public class AmazonSDKTileDownloader implements TileDownloader {
     }
 
     private File down(TileSet tileSet, String what) {
-        if(DESTINATION_FOLDER_PROP.equals(destinationFolder)) {
-            throw new RuntimeException("destinationFolder property has to be set before downloading");
-        }
-
         if(!listingService.exists(tileSet)) {
             throw new RuntimeException("I cannot download something, that doesn't exist, sorry. TileSet: " + tileSet);
         }

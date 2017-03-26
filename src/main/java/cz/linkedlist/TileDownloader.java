@@ -7,7 +7,8 @@ import java.io.File;
  */
 public interface TileDownloader {
 
-    String DESTINATION_FOLDER_PROP = "${destinationFolder}";
+    String DEFAULT_FOLDER = "/tmp/sentinel/";
+    String DESTINATION_FOLDER_PROP = "${destinationFolder:"+DEFAULT_FOLDER+"}";
     String DOWN_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/";
 
     void downBand(TileSet tileSet, int band);

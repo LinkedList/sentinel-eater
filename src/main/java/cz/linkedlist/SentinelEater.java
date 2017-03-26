@@ -3,6 +3,7 @@ package cz.linkedlist;
 import cz.linkedlist.amazon.AmazonSDKTileListingService;
 import cz.linkedlist.info.TileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -19,7 +20,12 @@ public class SentinelEater implements CommandLineRunner {
 	public static final String TILES = "tiles/";
 
 	@Autowired
+	@Qualifier("httpTileInfoService")
     private TileInfoService service;
+
+	@Autowired
+	@Qualifier("http-downloader")
+	private TileDownloader downloader;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SentinelEater.class, args).close();
@@ -30,5 +36,6 @@ public class SentinelEater implements CommandLineRunner {
 		TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
 		System.out.println(service.getProductInfo(tileSet));
 		System.out.println(service.getTileInfo(tileSet));
+		downloader.downProductInfo(tileSet);
 	}
 }
