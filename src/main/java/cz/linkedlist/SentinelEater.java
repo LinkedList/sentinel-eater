@@ -20,7 +20,7 @@ public class SentinelEater implements CommandLineRunner {
 		public static final String HTTP = "http";
 	}
 
-	@Autowired(required = false) //Till we create amazon tile info service :)
+	@Autowired
     private TileInfoService service;
 
 	@Autowired
@@ -33,11 +33,8 @@ public class SentinelEater implements CommandLineRunner {
 	@Override
 	public void run(String... strings) throws Exception {
 		TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
-
-		if(service != null) {
-			System.out.println(service.getProductInfo(tileSet));
-			System.out.println(service.getTileInfo(tileSet));
-		}
+        System.out.println(service.getProductInfo(tileSet));
+        System.out.println(service.getTileInfo(tileSet));
 
 		downloader.downProductInfo(tileSet);
 	}
