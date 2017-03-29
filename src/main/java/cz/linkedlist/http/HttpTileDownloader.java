@@ -4,8 +4,8 @@ import cz.linkedlist.SentinelEater;
 import cz.linkedlist.TileDownloader;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
@@ -21,15 +21,12 @@ import java.net.URL;
 @Service("http-downloader")
 @Async
 @Profile(SentinelEater.Profiles.HTTP)
+@RequiredArgsConstructor
 public class HttpTileDownloader implements TileDownloader {
 
     @Value(DESTINATION_FOLDER_PROP)
     private String destinationFolder;
     private final TileListingService listingService;
-
-    public HttpTileDownloader(@Qualifier("http-listing") TileListingService tileListingService) {
-        this.listingService = tileListingService;
-    }
 
     @Override
     public void downBand(TileSet tileSet, int band) {

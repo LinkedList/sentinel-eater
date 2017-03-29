@@ -8,8 +8,8 @@ import cz.linkedlist.SentinelEater;
 import cz.linkedlist.TileDownloader;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
@@ -27,17 +27,13 @@ import static cz.linkedlist.SentinelEater.BUCKET;
 @Service("amazon-downloader")
 @Async
 @Profile(SentinelEater.Profiles.AMAZON)
+@RequiredArgsConstructor
 public class AmazonSDKTileDownloader implements TileDownloader {
 
     @Value(DESTINATION_FOLDER_PROP)
     private String destinationFolder;
     private final AmazonS3Client client;
     private final TileListingService listingService;
-
-    public AmazonSDKTileDownloader(AmazonS3Client client, @Qualifier("amazon-listing") TileListingService listingService) {
-        this.client = client;
-        this.listingService = listingService;
-    }
 
     @Override
     public void downBand(TileSet tileSet, int band) {

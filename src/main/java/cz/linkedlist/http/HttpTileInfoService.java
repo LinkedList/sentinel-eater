@@ -6,7 +6,7 @@ import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,17 +16,13 @@ import static cz.linkedlist.TileDownloader.DOWN_URL;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-@Service
+@Service("http-info")
 @Profile(SentinelEater.Profiles.HTTP)
+@RequiredArgsConstructor
 public class HttpTileInfoService implements TileInfoService {
 
     private final TileListingService listingService;
     private final RestTemplate rest;
-
-    public HttpTileInfoService(@Qualifier("http-listing") TileListingService listingService, RestTemplate restTemplate) {
-        this.listingService = listingService;
-        this.rest = restTemplate;
-    }
 
     @Override
     public TileInfo getTileInfo(TileSet tileSet) {
