@@ -4,11 +4,9 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import cz.linkedlist.DateParser;
-import cz.linkedlist.TileListingService;
-import cz.linkedlist.TileSet;
-import cz.linkedlist.UTMCode;
+import cz.linkedlist.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,6 +22,7 @@ import static cz.linkedlist.SentinelEater.TILES;
  */
 @Service("amazon-listing")
 @RequiredArgsConstructor
+@Profile(SentinelEater.Profiles.AMAZON)
 public class AmazonSDKTileListingService implements TileListingService {
 
     private final AmazonS3Client client;

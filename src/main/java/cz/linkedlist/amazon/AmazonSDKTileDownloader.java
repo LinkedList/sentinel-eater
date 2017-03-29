@@ -4,12 +4,14 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import cz.linkedlist.SentinelEater;
 import cz.linkedlist.TileDownloader;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import static cz.linkedlist.SentinelEater.BUCKET;
  */
 @Service("amazon-downloader")
 @Async
+@Profile(SentinelEater.Profiles.AMAZON)
 public class AmazonSDKTileDownloader implements TileDownloader {
 
     @Value(DESTINATION_FOLDER_PROP)
