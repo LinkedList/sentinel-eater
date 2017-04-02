@@ -2,16 +2,23 @@ package cz.linkedlist.http;
 
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
+import cz.linkedlist.cache.Cache;
+import org.mockito.Mockito;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -22,7 +29,11 @@ public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests
 
     @BeforeTest
     public void init() {
-        service = new HttpTileListingService();
+        Cache cache = Mockito.mock(Cache.class);
+        when(cache.exists(anyObject())).thenReturn(Optional.empty());
+        when(cache.insert(anyObject(), eq(true))).thenReturn(true);
+        when(cache.insert(anyObject(), eq(false))).thenReturn(false);
+        service = new HttpTileListingService(new RestTemplate(), cache);
     }
 
     @Test

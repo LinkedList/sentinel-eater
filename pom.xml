@@ -39,6 +39,10 @@
 			<artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
@@ -49,7 +53,7 @@
 		<dependency>
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts-core</artifactId>
-            <version>${jts-core.version}</version>
+			<version>${jts-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.wololo</groupId>
@@ -66,6 +70,18 @@
 			<artifactId>jackson-datatype-jts</artifactId>
 			<version>${jackson-datatype-jts.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Runtime -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- Test dependencies -->
 		<dependency>
@@ -79,7 +95,7 @@
 			<version>${testng.version}</version>
 			<scope>test</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>

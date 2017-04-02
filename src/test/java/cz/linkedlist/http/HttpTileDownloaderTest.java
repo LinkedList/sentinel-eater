@@ -2,7 +2,10 @@ package cz.linkedlist.http;
 
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
+import cz.linkedlist.cache.Cache;
+import org.mockito.Mockito;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -10,7 +13,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Optional;
 
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -18,11 +25,17 @@ import static org.testng.Assert.assertTrue;
  */
 public class HttpTileDownloaderTest extends AbstractTestNGSpringContextTests {
 
-    private HttpTileListingService listingService = new HttpTileListingService();
-    private HttpTileDownloader downloader = new HttpTileDownloader(listingService);
+    private HttpTileListingService listingService;
+    private HttpTileDownloader downloader;
 
     @BeforeTest
     public void init() {
+        Cache cache = Mockito.mock(Cache.class);
+        when(cache.exists(anyObject())).thenReturn(Optional.empty());
+        when(cache.insert(anyObject(), eq(true))).thenReturn(true);
+        when(cache.insert(anyObject(), eq(false))).thenReturn(false);
+        listingService = new HttpTileListingService(new RestTemplate(), cache);
+        downloader = new HttpTileDownloader(listingService);
         downloader.setDestinationFolder("/tmp/");
     }
 

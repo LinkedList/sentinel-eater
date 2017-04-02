@@ -1,8 +1,10 @@
 package cz.linkedlist.http;
 
 import cz.linkedlist.*;
+import cz.linkedlist.cache.Cache;
 import cz.linkedlist.http.xml.Contents;
 import cz.linkedlist.http.xml.ListBucketResult;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,12 +21,14 @@ import static cz.linkedlist.SentinelEater.TILES;
  */
 @Service("http-listing")
 @Profile(SentinelEater.Profiles.HTTP)
+@RequiredArgsConstructor
 public class HttpTileListingService implements TileListingService {
 
     private static final String EXISTS_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/?delimiter=/&prefix=";
     private static final String NO_DELIMITER_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/?prefix=";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+    private final Cache cache;
 
     @Override
     public List<String> getFolderContents(TileSet tileSet) {
@@ -34,8 +38,10 @@ public class HttpTileListingService implements TileListingService {
 
     @Override
     public boolean exists(TileSet tileSet) {
-        ListBucketResult result = restTemplate.getForObject(EXISTS_URL + tileSet.toString(), ListBucketResult.class);
-        return !result.getContents().isEmpty();
+        return cache.exists(tileSet).orElseGet(()->{
+            ListBucketResult result = restTemplate.getForObject(EXISTS_URL + tileSet.toString(), ListBucketResult.class);
+            return cache.insert(tileSet, !result.getContents().isEmpty());
+        });
     }
 
     @Override
