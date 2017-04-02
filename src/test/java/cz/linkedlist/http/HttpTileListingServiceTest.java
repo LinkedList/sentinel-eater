@@ -3,11 +3,10 @@ package cz.linkedlist.http;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
 import cz.linkedlist.cache.Cache;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.client.RestTemplate;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,11 +22,11 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-public class HttpTileListingServiceTest extends AbstractTestNGSpringContextTests {
+public class HttpTileListingServiceTest {
 
     private HttpTileListingService service;
 
-    @BeforeTest
+    @Before
     public void init() {
         Cache cache = Mockito.mock(Cache.class);
         when(cache.exists(anyObject())).thenReturn(Optional.empty());

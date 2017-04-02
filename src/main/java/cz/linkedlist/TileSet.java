@@ -29,6 +29,10 @@ public class TileSet {
         this(code, date, 0);
     }
 
+    public static TileSet of(String utmCode, int year, int month, int day){
+        return new TileSet(UTMCode.of(utmCode), LocalDate.of(year, month, day));
+    }
+
     public String toString() {
         return "tiles/" + code.toString() + date.format(DATE_FORMAT) + setOrder + "/";
     }

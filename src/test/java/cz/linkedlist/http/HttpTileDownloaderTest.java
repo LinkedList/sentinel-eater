@@ -3,11 +3,10 @@ package cz.linkedlist.http;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
 import cz.linkedlist.cache.Cache;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.client.RestTemplate;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,20 +14,22 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-public class HttpTileDownloaderTest extends AbstractTestNGSpringContextTests {
+public class HttpTileDownloaderTest {
 
     private HttpTileListingService listingService;
     private HttpTileDownloader downloader;
 
-    @BeforeTest
+    @Before
     public void init() {
         Cache cache = Mockito.mock(Cache.class);
         when(cache.exists(anyObject())).thenReturn(Optional.empty());
@@ -45,7 +46,8 @@ public class HttpTileDownloaderTest extends AbstractTestNGSpringContextTests {
         Path path = Paths.get("/tmp/" + tileSet.productInfo().replace("/", "_"));
         Files.deleteIfExists(path);
         downloader.downProductInfo(tileSet);
-        assertTrue(Files.exists(path));
+        assertThat(Files.exists(path), is(true));
+        assertTrue(Files.size(path) > 0);
         Files.deleteIfExists(path);
     }
 
