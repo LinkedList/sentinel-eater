@@ -11,7 +11,7 @@
 - [x] Transforming from lat/long to UTM code
 - [x] Search by UTM/year/month/day through tiles
 - [x] Extracting info about concrete tile (e.g. cloudiness)
-- [ ] Caching available dates to local DB
+- [x] Caching available dates to local DB
 - [ ] Search by parameters (cloudiness, intersecting geometry etc.)
 - [ ] Continuous checking of desired tiles for new updates (SNS notifications, cron polling)
 - [ ] API for actually doing all these things :smile:
