@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import cz.linkedlist.*;
+import cz.linkedlist.cache.Cache;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import static cz.linkedlist.SentinelEater.TILES;
 public class AmazonSDKTileListingService implements TileListingService {
 
     private final AmazonS3Client client;
+    private final Cache cache;
 
     @Override
     public List<String> getFolderContents(TileSet tileSet) {
@@ -40,10 +42,12 @@ public class AmazonSDKTileListingService implements TileListingService {
 
     @Override
     public boolean exists(final TileSet tileSet) {
-        ListObjectsV2Request request = buildRequest(tileSet.toString());
-        request.setDelimiter(null);
-        ListObjectsV2Result list = client.listObjectsV2(request);
-        return list.getKeyCount() > 0;
+        return cache.exists(tileSet).orElseGet(()->{
+            ListObjectsV2Request request = buildRequest(tileSet.toString());
+            request.setDelimiter(null);
+            ListObjectsV2Result list = client.listObjectsV2(request);
+            return cache.insert(tileSet, list.getKeyCount() > 0);
+        });
     }
 
     @Override

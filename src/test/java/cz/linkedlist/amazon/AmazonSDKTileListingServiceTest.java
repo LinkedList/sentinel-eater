@@ -8,16 +8,22 @@ import cz.linkedlist.SentinelEater;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
+import cz.linkedlist.cache.Cache;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,6 +33,15 @@ import static org.mockito.Mockito.when;
 public class AmazonSDKTileListingServiceTest {
 
     private TileListingService service;
+    private Cache cache;
+
+    @Before
+    public void init() {
+        cache = Mockito.mock(Cache.class);
+        when(cache.exists(anyObject())).thenReturn(Optional.empty());
+        when(cache.insert(anyObject(), eq(true))).thenReturn(true);
+        when(cache.insert(anyObject(), eq(false))).thenReturn(false);
+    }
 
     @Test
     public void testGetYears() throws Exception {
@@ -40,7 +55,7 @@ public class AmazonSDKTileListingServiceTest {
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, cache);
 
         Set<Integer> years = service.getYears(code);
 
@@ -62,7 +77,7 @@ public class AmazonSDKTileListingServiceTest {
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, cache);
 
         Set<Integer> months = service.getMonths(code, 2015);
 
@@ -84,7 +99,7 @@ public class AmazonSDKTileListingServiceTest {
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, cache);
 
         Set<Integer> days = service.getDays(code, 2015, 1);
 
@@ -105,7 +120,7 @@ public class AmazonSDKTileListingServiceTest {
         ));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, cache);
 
         Set<Integer> dataSets = service.getDataSets(code, 2015, 1, 15);
 
@@ -123,7 +138,7 @@ public class AmazonSDKTileListingServiceTest {
         list.setKeyCount(1);
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, cache);
 
         assertThat(service.exists(tileSet), is(true));
     }
@@ -138,7 +153,7 @@ public class AmazonSDKTileListingServiceTest {
         list.getObjectSummaries().add(summary("tiles/33/U/XQ/2016/8/31/0/B03.jp2"));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, cache);
 
         assertThat(service.getFolderContents(tileSet), hasItem("tiles/33/U/XQ/2016/8/31/0/B01.jp2"));
         assertThat(service.getFolderContents(tileSet), hasItem("tiles/33/U/XQ/2016/8/31/0/B02.jp2"));
@@ -153,7 +168,7 @@ public class AmazonSDKTileListingServiceTest {
         list.setKeyCount(0);
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
 
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, cache);
 
         assertThat(service.exists(tileSet), is(false));
     }
@@ -167,7 +182,7 @@ public class AmazonSDKTileListingServiceTest {
         list.getObjectSummaries().add(summary("tiles/33/U/XQ/2017/8/30/0/B01.jp2"));
         list.getObjectSummaries().add(summary("tiles/33/U/XQ/2017/2/14/0/B01.jp2"));
         when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(list);
-        service = new AmazonSDKTileListingService(client);
+        service = new AmazonSDKTileListingService(client, cache);
 
         List<LocalDate> dates = service.availableDates(code);
         assertThat(dates, hasSize(3));
