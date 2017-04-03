@@ -23,6 +23,12 @@ public class UTMCodeTest {
     }
 
     @Test
+    public void testOfWithSlashes() throws Exception {
+        UTMCode code = UTMCode.of("36/M/TD/");
+        assertThat(code.toString(), is("36/M/TD/"));
+    }
+
+    @Test
     public void testOfWithLeadingZero() throws Exception {
         UTMCode code = UTMCode.of("06MTD");
         assertThat(code.toString(), is("6/M/TD/"));
