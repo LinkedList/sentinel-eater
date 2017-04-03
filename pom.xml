@@ -25,7 +25,7 @@
 		<testng.version>6.10</testng.version>
 		<jts-core.version>1.14.0</jts-core.version>
 		<jts2geojson.version>0.10.0</jts2geojson.version>
-		<spring-web.version>4.3.6.RELEASE</spring-web.version>
+		<spring-web.version>4.3.7.RELEASE</spring-web.version>
 		<jackson-datatype-jts.version>2.4</jackson-datatype-jts.version>
 	</properties>
 
