@@ -2,6 +2,8 @@
 ![Sentinel](https://openclipart.org/image/200px/svg_to_png/196091/satellite-icon.png)
 
 ![Travis Build](https://travis-ci.org/LinkedList/sentinel-eater.svg?branch=master)
+[![codecov](https://codecov.io/gh/LinkedList/sentinel-eater/branch/master/graph/badge.svg)](https://codecov.io/gh/LinkedList/sentinel-eater)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e4cd7df22ed469492cf5aa0399e559b)](https://www.codacy.com/app/LinkedList/sentinel-eater?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=LinkedList/sentinel-eater&amp;utm_campaign=Badge_Grade)
 
 (Micro) Service for automatic download of Sentinel data.
 
