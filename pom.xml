@@ -27,7 +27,7 @@
 		<jts2geojson.version>0.10.0</jts2geojson.version>
 		<spring-web.version>4.3.7.RELEASE</spring-web.version>
 		<jackson-datatype-jts.version>2.4</jackson-datatype-jts.version>
-		<jacoco-maven-plugin.version>0.7.7.201606060606</jacoco-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
 	</properties>
 
 	<dependencies>
