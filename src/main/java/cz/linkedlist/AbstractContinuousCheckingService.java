@@ -23,6 +23,7 @@ public abstract class AbstractContinuousCheckingService implements ContinuousChe
                 LocalDate.now(),
                 cloudiness
         );
+        createTask(new DownloadTask(utm, cloudiness, LocalDate.now()));
     }
 
     @Override

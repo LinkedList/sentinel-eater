@@ -3,6 +3,8 @@ package cz.linkedlist;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,10 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>.
@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
 public class AbstractContinuousCheckingServiceTest {
 
     @Autowired
+    @Spy
     private TestContinuousCheckingService testService;
     @Autowired
     private JdbcTemplate jdbc;
@@ -41,6 +42,7 @@ public class AbstractContinuousCheckingServiceTest {
         Collection<DownloadTask> tasks = testService.list();
 
         assertThat(tasks, hasItem(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now())));
+        Mockito.verify(testService).createTask(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now()));
     }
 
 }
