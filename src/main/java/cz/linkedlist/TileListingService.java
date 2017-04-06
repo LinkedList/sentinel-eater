@@ -1,6 +1,7 @@
 package cz.linkedlist;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +23,8 @@ public interface TileListingService {
     Set<Integer> getDataSets(UTMCode code, int year, int month, int day);
 
     List<LocalDate> availableDates(UTMCode utmCode);
+
+    Collection<LocalDate> availableDatesAfter(UTMCode utmCode, LocalDate date);
 
     default String stripPrefixAnsSlash(String prefix, String value) {
         String strippedPrefix = value.substring(prefix.length());

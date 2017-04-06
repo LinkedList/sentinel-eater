@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -102,5 +103,10 @@ public class AmazonSDKTileListingService implements TileListingService {
         request1.setPrefix(TILES + utmCode);
         ListObjectsV2Result list = client.listObjectsV2(request1);
         return DateParser.parseS3(list.getObjectSummaries());
+    }
+
+    @Override
+    public Collection<LocalDate> availableDatesAfter(UTMCode utmCode, LocalDate date) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

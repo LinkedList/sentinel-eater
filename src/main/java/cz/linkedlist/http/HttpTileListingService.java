@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static cz.linkedlist.SentinelEater.TILES;
 
@@ -74,10 +77,41 @@ public class HttpTileListingService implements TileListingService {
         return DateParser.parseHttp(result);
     }
 
+    @Override
+    public Collection<LocalDate> availableDatesAfter(UTMCode utmCode, LocalDate date) {
+        final Set<LocalDate> availableDatesAfter = new HashSet<>();
+        final Set<Integer> years = this.getYears(utmCode);
+        final Set<Integer> possibleYears = years.stream().filter(year -> year > date.getYear()).collect(Collectors.toSet());
+        for (Integer year : possibleYears) {
+            availableDatesAfter.addAll(availableDates(utmCode, year + "/"));
+        }
+
+        // specified date year needs special handling
+        final Set<Integer> months = getMonths(utmCode, date.getYear());
+        final Set<Integer> possibleMonths = months.stream().filter(m -> m > date.getMonthValue()).collect(Collectors.toSet());
+        for(Integer month : possibleMonths) {
+            availableDatesAfter.addAll(availableDates(utmCode, date.getYear() + "/" + month + "/"));
+        }
+
+        //specified date month needs special handling
+        final Set<Integer> days = getDays(utmCode, date.getYear(), date.getMonthValue());
+        final Set<Integer> possibleDays = days.stream().filter(d -> d > date.getDayOfMonth()).collect(Collectors.toSet());
+        for(Integer day : possibleDays) {
+            availableDatesAfter.addAll(availableDates(utmCode, date.getYear() + "/" + date.getMonthValue() + "/" + day + "/"));
+        }
+
+        return availableDatesAfter;
+    }
+
     private Set<Integer> getPossibleValues(final String prefix) {
         ListBucketResult result = restTemplate.getForObject(EXISTS_URL + prefix, ListBucketResult.class);
         return result.getCommonPrefixes().stream()
                 .map(cp -> Integer.valueOf(stripPrefixAnsSlash(prefix, cp.getPrefix())))
                 .collect(Collectors.toSet());
+    }
+
+    public List<LocalDate> availableDates(UTMCode utmCode, String prefix) {
+        ListBucketResult result = restTemplate.getForObject(NO_DELIMITER_URL + TILES + utmCode + prefix, ListBucketResult.class);
+        return DateParser.parseHttp(result);
     }
 }
