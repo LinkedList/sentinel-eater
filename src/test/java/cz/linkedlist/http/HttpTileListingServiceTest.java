@@ -129,6 +129,20 @@ public class HttpTileListingServiceTest {
         assertThat(localDates, hasItem(LocalDate.of(2015, 12, 6)));
     }
 
+    @Test
+    public void testAvailableDatesAfterAreSortedAscendingly() throws Exception {
+        Collection<LocalDate> localDates = service.availableDatesAfter(UTMCode.of("36MTD"), LocalDate.of(2017, 1, 1));
+        LocalDate previous = null;
+        for (LocalDate localDate : localDates) {
+            if(previous == null) {
+                previous = localDate;
+                continue;
+            }
+            assertThat(previous, lessThan(localDate));
+            previous = localDate;
+        }
+    }
+
     private void assertAllBands(List<String> contents) {
         for(int i = 1; i<=12; i++) {
             assertThat(contents, hasItem("tiles/36/M/TD/2015/10/23/0/B" + String.format("%02d", i) + ".jp2"));

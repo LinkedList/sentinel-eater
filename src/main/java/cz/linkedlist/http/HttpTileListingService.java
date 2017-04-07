@@ -10,12 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static cz.linkedlist.SentinelEater.TILES;
 
@@ -79,7 +75,7 @@ public class HttpTileListingService implements TileListingService {
 
     @Override
     public Collection<LocalDate> availableDatesAfter(UTMCode utmCode, LocalDate date) {
-        final Set<LocalDate> availableDatesAfter = new HashSet<>();
+        final Set<LocalDate> availableDatesAfter = new TreeSet<>();
         final Set<Integer> years = this.getYears(utmCode);
         final Set<Integer> possibleYears = years.stream().filter(year -> year > date.getYear()).collect(Collectors.toSet());
         for (Integer year : possibleYears) {
