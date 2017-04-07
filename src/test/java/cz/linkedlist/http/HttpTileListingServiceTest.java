@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -101,6 +102,29 @@ public class HttpTileListingServiceTest {
     public void testAvailableDates() throws Exception {
         UTMCode code = UTMCode.of("20MMN");
         List<LocalDate> localDates = service.availableDates(code);
+        assertThat(localDates, hasSize(1));
+        assertThat(localDates, hasItem(LocalDate.of(2015, 12, 6)));
+    }
+
+    @Test
+    public void testAvailableDatesAfter() throws Exception {
+        UTMCode code = UTMCode.of("20MMN");
+        Collection<LocalDate> localDates = service.availableDatesAfter(code, LocalDate.of(2014, 1, 6));
+        assertThat(localDates, hasSize(1));
+        assertThat(localDates, hasItem(LocalDate.of(2015, 12, 6)));
+    }
+
+    @Test
+    public void testAvailableDatesAfterWithoutAvailableDates() throws Exception {
+        UTMCode code = UTMCode.of("20MMN");
+        Collection<LocalDate> localDates = service.availableDatesAfter(code, LocalDate.of(2017, 1, 6));
+        assertThat(localDates, hasSize(0));
+    }
+
+    @Test
+    public void testAvailableDatesAfterWithDateInTheSameYearAndMonth() throws Exception {
+        UTMCode code = UTMCode.of("20MMN");
+        Collection<LocalDate> localDates = service.availableDatesAfter(code, LocalDate.of(2015, 12, 5));
         assertThat(localDates, hasSize(1));
         assertThat(localDates, hasItem(LocalDate.of(2015, 12, 6)));
     }
