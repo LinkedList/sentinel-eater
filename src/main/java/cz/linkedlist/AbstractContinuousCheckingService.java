@@ -1,7 +1,6 @@
 package cz.linkedlist;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.TaskScheduler;
@@ -16,7 +15,8 @@ import java.util.Collection;
 public abstract class AbstractContinuousCheckingService implements ContinuousCheckingService {
 
     private final JdbcTemplate jdbc;
-    protected final TileListingService tileListingService;
+    protected final TileListingService listingService;
+    protected final TileInfoService infoService;
     protected final TaskScheduler scheduler;
 
     @Override

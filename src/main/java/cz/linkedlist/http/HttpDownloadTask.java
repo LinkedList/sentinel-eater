@@ -2,6 +2,7 @@ package cz.linkedlist.http;
 
 
 import cz.linkedlist.DownloadTask;
+import cz.linkedlist.TileInfoService;
 import cz.linkedlist.TileListingService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ public class HttpDownloadTask implements Runnable {
 
     private final DownloadTask task;
     private final TileListingService tileListingService;
+    private final TileInfoService infoService;
 
     @Override
     public void run() {
