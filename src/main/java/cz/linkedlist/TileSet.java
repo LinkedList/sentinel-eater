@@ -1,7 +1,10 @@
 package cz.linkedlist;
 
+import cz.linkedlist.info.TileInfo;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,11 +17,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TileSet {
 
+    private static final Logger log = LoggerFactory.getLogger(TileSet.class);
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("uuuu/M/d/");
 
     private final UTMCode code;
     private final LocalDate date;
     private final Integer setOrder;
+    private TileInfo info;
 
     /**
      * Defaults to set order 0
@@ -27,6 +32,10 @@ public class TileSet {
      */
     public TileSet(UTMCode code, LocalDate date) {
         this(code, date, 0);
+    }
+
+    public TileSet(TileSet set) {
+        this(set.getCode(), set.getDate(), set.getSetOrder());
     }
 
     public static TileSet of(String utmCode, int year, int month, int day){
@@ -59,5 +68,12 @@ public class TileSet {
 
     public String metadata() {
         return toString() + "metadata.xml";
+    }
+
+    public Double cloudiness() {
+        if(info != null) {
+            return info.getCloudyPixelPercentage();
+        }
+        throw new RuntimeException("Get tile cloudiness was attempted for tileSet without TileInfo: " + this.toString());
     }
 }

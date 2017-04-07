@@ -14,6 +14,7 @@ import cz.linkedlist.info.TileInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.io.IOException;
 
@@ -39,6 +40,11 @@ public class AmazonSDKTileInfoService implements TileInfoService {
     @Override
     public ProductInfo getProductInfo(TileSet tileSet) {
         return down(tileSet, ProductInfo.class);
+    }
+
+    @Override
+    public ListenableFuture<TileSet> downTileInfo(final TileSet tileSet) {
+        throw new UnsupportedOperationException("This feature is not yet implemented");
     }
 
     private <OBJ> OBJ down(TileSet tileSet, Class<OBJ> clazz) {

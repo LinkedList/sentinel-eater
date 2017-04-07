@@ -8,7 +8,10 @@ import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
 
 import static cz.linkedlist.TileDownloader.DOWN_URL;
@@ -42,4 +45,12 @@ public class HttpTileInfoService implements TileInfoService {
         return rest.getForObject(DOWN_URL + tileSet.productInfo(), ProductInfo.class);
     }
 
+    @Override
+    @Async
+    public ListenableFuture<TileSet> downTileInfo(final TileSet tileSet) {
+        final TileInfo info = getTileInfo(tileSet);
+        final TileSet set = new TileSet(tileSet);
+        set.setInfo(info);
+        return new AsyncResult<>(set);
+    }
 }

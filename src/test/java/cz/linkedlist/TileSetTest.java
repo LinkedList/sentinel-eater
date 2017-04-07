@@ -1,5 +1,6 @@
 package cz.linkedlist;
 
+import cz.linkedlist.info.TileInfo;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -7,6 +8,8 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.sameInstance;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -68,5 +71,39 @@ public class TileSetTest {
         assertThat(tileSet.productInfo(), is(tileSet.toString() + "productInfo.json"));
         assertThat(tileSet.metadata(), is(tileSet.toString() + "metadata.xml"));
         assertThat(tileSet.tileInfo(), is(tileSet.toString() + "tileInfo.json"));
+    }
+
+    @Test
+    public void getNewInstance() {
+        UTMCode code = new UTMCode(28, "C", "DD");
+        LocalDate date = LocalDate.of(2017, 3, 9);
+        Integer setOrder = 0;
+        TileSet tileSet = new TileSet(code, date, setOrder);
+        TileSet clone = new TileSet(tileSet);
+
+        assertThat(tileSet, not(sameInstance(clone)));
+        assertThat(tileSet, is(clone));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void getCloudinessWithout() {
+        UTMCode code = new UTMCode(28, "C", "DD");
+        LocalDate date = LocalDate.of(2017, 3, 9);
+        Integer setOrder = 0;
+        TileSet tileSet = new TileSet(code, date, setOrder);
+        tileSet.cloudiness();
+    }
+
+    @Test
+    public void getCloudinessWith() {
+        UTMCode code = new UTMCode(28, "C", "DD");
+        LocalDate date = LocalDate.of(2017, 3, 9);
+        Integer setOrder = 0;
+        TileSet tileSet = new TileSet(code, date, setOrder);
+        TileInfo info = new TileInfo();
+        info.setCloudyPixelPercentage(50D);
+        tileSet.setInfo(info);
+
+        assertThat(tileSet.cloudiness(), is(50D));
     }
 }
