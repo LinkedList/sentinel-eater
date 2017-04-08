@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestContinuousCheckingService extends AbstractContinuousCheckingService {
 
-    public TestContinuousCheckingService(JdbcTemplate jdbc, TileListingService tileListingService, TaskScheduler scheduler) {
-        super(jdbc, tileListingService, scheduler);
+    public TestContinuousCheckingService(JdbcTemplate jdbc, TileListingService listingService, TileInfoService infoService, TaskScheduler scheduler) {
+        super(jdbc, listingService, infoService, scheduler);
     }
 
     @Override
