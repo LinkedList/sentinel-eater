@@ -4,7 +4,7 @@ import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
@@ -15,7 +15,8 @@ import java.util.concurrent.Executor;
  * @author Martin Macko <https://github.com/LinkedList>.
  */
 @Configuration
-public class AsyncConfiguration extends AsyncConfigurerSupport {
+@EnableAsync
+public class AsyncConfiguration {
 
     private static final int POOL_SIZE = 2;
     private static final int QUEUE_CAPACITY = 20;
@@ -28,7 +29,7 @@ public class AsyncConfiguration extends AsyncConfigurerSupport {
         return sch;
     }
 
-    @Override
+    @Bean
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor e = new ThreadPoolTaskExecutor();
         e.setCorePoolSize(POOL_SIZE);
@@ -37,7 +38,7 @@ public class AsyncConfiguration extends AsyncConfigurerSupport {
         return e;
     }
 
-    @Override
+    @Bean
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return new SimpleAsyncUncaughtExceptionHandler();
     }

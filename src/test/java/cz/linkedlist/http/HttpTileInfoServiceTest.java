@@ -1,5 +1,6 @@
 package cz.linkedlist.http;
 
+import cz.linkedlist.TileInfoService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
 import cz.linkedlist.info.ProductInfo;
@@ -30,7 +31,7 @@ import static org.hamcrest.Matchers.*;
 public class HttpTileInfoServiceTest {
 
     @Autowired
-    private HttpTileInfoService service;
+    private TileInfoService service;
     @Autowired
     private JdbcTemplate jdbc;
 
