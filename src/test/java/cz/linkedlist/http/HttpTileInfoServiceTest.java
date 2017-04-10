@@ -15,11 +15,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.concurrent.ListenableFuture;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -64,6 +64,22 @@ public class HttpTileInfoServiceTest {
                     assertThat(set, not(tileSet));
                     assertThat(tileSet.getInfo(), not(nullValue()));
                     assertThat(tileSet.cloudiness(), is(0.06D));
+                },
+                throwable -> Assert.fail());
+    }
+
+    @Test
+    public void testDownloadTileInfoAndSetToTileSets() {
+        final TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        final TileSet tileSet2 = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        final ListenableFuture<List<TileSet>> f = service.downTileInfo(Arrays.asList(tileSet, tileSet2));
+        f.addCallback(
+                list -> {
+                    assertThat(list, hasSize(2));
+                    list.forEach(set -> {
+                        assertThat(set.getInfo(), not(nullValue()));
+                        assertThat(set.cloudiness(), is(0.06D));
+                    });
                 },
                 throwable -> Assert.fail());
     }

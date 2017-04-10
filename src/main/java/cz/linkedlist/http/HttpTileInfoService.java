@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static cz.linkedlist.TileDownloader.DOWN_URL;
 
 /**
@@ -52,5 +55,18 @@ public class HttpTileInfoService implements TileInfoService {
         final TileSet set = new TileSet(tileSet);
         set.setInfo(info);
         return new AsyncResult<>(set);
+    }
+
+    @Override
+    public ListenableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
+        final List<TileSet> list = new ArrayList<>();
+        tileSets.forEach(tileSet -> {
+            TileInfo info = getTileInfo(tileSet);
+            final TileSet newSet = new TileSet(tileSet);
+            newSet.setInfo(info);
+            list.add(newSet);
+        });
+
+        return new AsyncResult<>(list);
     }
 }
