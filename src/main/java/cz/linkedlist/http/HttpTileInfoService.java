@@ -4,13 +4,15 @@ import cz.linkedlist.*;
 import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static cz.linkedlist.TileDownloader.DOWN_URL;
@@ -21,6 +23,7 @@ import static cz.linkedlist.TileDownloader.DOWN_URL;
 @Service("http-info")
 @Profile(SentinelEater.Profiles.HTTP)
 @RequiredArgsConstructor
+@Slf4j
 public class HttpTileInfoService implements TileInfoService {
 
     private final TileListingService listingService;
@@ -46,17 +49,17 @@ public class HttpTileInfoService implements TileInfoService {
 
     @Override
     @Async
-    public CompletableFuture<TileSet> downTileInfo(final TileSet tileSet) {
+    public ListenableFuture<TileSet> downTileInfo(final TileSet tileSet) {
+        log.info("Downloading tileInfo for tileSet: {}", tileSet);
         final TileInfo info = getTileInfo(tileSet);
         final TileSet set = new TileSet(tileSet);
         set.setInfo(info);
-        return CompletableFuture.completedFuture(set);
+        return new AsyncResult<>(set);
     }
 
     @Override
-    public CompletableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
-        final List<CompletableFuture<TileSet>> futures = tileSets.stream().map(this::downTileInfo).collect(Collectors.toList());
-
-        return AsyncUtil.all(futures);
+    public ListenableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
+        final List<ListenableFuture<TileSet>> futures = tileSets.stream().map(this::downTileInfo).collect(Collectors.toList());
+        return AsyncUtil.allOf(futures);
     }
 }

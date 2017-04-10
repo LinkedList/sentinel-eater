@@ -14,10 +14,10 @@ import cz.linkedlist.info.TileInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import static cz.linkedlist.SentinelEater.BUCKET;
 
@@ -44,12 +44,12 @@ public class AmazonSDKTileInfoService implements TileInfoService {
     }
 
     @Override
-    public CompletableFuture<TileSet> downTileInfo(final TileSet tileSet) {
+    public ListenableFuture<TileSet> downTileInfo(final TileSet tileSet) {
         throw new UnsupportedOperationException("This feature is not yet implemented");
     }
 
     @Override
-    public CompletableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
+    public ListenableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
         throw new UnsupportedOperationException("This feature is not yet implemented");
     }
 
