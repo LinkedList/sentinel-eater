@@ -2,9 +2,9 @@ package cz.linkedlist;
 
 import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
-import org.springframework.util.concurrent.ListenableFuture;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -19,7 +19,7 @@ public interface TileInfoService {
      * @param tileSet
      * @return new instance of TileSet with downloaded TileInfo
      */
-    ListenableFuture<TileSet> downTileInfo(final TileSet tileSet);
+    CompletableFuture<TileSet> downTileInfo(final TileSet tileSet);
 
-    ListenableFuture<List<TileSet>> downTileInfo(final List<TileSet> tileSets);
+    CompletableFuture<List<TileSet>> downTileInfo(final List<TileSet> tileSets);
 }

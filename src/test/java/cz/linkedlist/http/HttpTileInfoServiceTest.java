@@ -4,7 +4,6 @@ import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
 import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.concurrent.ListenableFuture;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -58,29 +57,27 @@ public class HttpTileInfoServiceTest {
     @Test
     public void testDownloadTileInfoAndSetToTileSet() {
         final TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
-        final ListenableFuture<TileSet> f = service.downTileInfo(tileSet);
-        f.addCallback(
-                set -> {
-                    assertThat(set, not(tileSet));
-                    assertThat(tileSet.getInfo(), not(nullValue()));
-                    assertThat(tileSet.cloudiness(), is(0.06D));
-                },
-                throwable -> Assert.fail());
+        final CompletableFuture<TileSet> f = service.downTileInfo(tileSet);
+        f.thenAccept(set -> {
+            assertThat(set, not(tileSet));
+            assertThat(tileSet.getInfo(), not(nullValue()));
+            assertThat(tileSet.cloudiness(), is(0.06D));
+        });
+
     }
 
     @Test
     public void testDownloadTileInfoAndSetToTileSets() {
         final TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
         final TileSet tileSet2 = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
-        final ListenableFuture<List<TileSet>> f = service.downTileInfo(Arrays.asList(tileSet, tileSet2));
-        f.addCallback(
+        final CompletableFuture<List<TileSet>> f = service.downTileInfo(Arrays.asList(tileSet, tileSet2));
+        f.thenAccept(
                 list -> {
                     assertThat(list, hasSize(2));
                     list.forEach(set -> {
                         assertThat(set.getInfo(), not(nullValue()));
                         assertThat(set.cloudiness(), is(0.06D));
                     });
-                },
-                throwable -> Assert.fail());
+                });
     }
 }

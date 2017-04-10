@@ -1,21 +1,17 @@
 package cz.linkedlist.http;
 
-import cz.linkedlist.SentinelEater;
-import cz.linkedlist.TileInfoService;
-import cz.linkedlist.TileListingService;
-import cz.linkedlist.TileSet;
+import cz.linkedlist.*;
 import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static cz.linkedlist.TileDownloader.DOWN_URL;
 
@@ -50,23 +46,17 @@ public class HttpTileInfoService implements TileInfoService {
 
     @Override
     @Async
-    public ListenableFuture<TileSet> downTileInfo(final TileSet tileSet) {
+    public CompletableFuture<TileSet> downTileInfo(final TileSet tileSet) {
         final TileInfo info = getTileInfo(tileSet);
         final TileSet set = new TileSet(tileSet);
         set.setInfo(info);
-        return new AsyncResult<>(set);
+        return CompletableFuture.completedFuture(set);
     }
 
     @Override
-    public ListenableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
-        final List<TileSet> list = new ArrayList<>();
-        tileSets.forEach(tileSet -> {
-            TileInfo info = getTileInfo(tileSet);
-            final TileSet newSet = new TileSet(tileSet);
-            newSet.setInfo(info);
-            list.add(newSet);
-        });
+    public CompletableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
+        final List<CompletableFuture<TileSet>> futures = tileSets.stream().map(this::downTileInfo).collect(Collectors.toList());
 
-        return new AsyncResult<>(list);
+        return AsyncUtil.all(futures);
     }
 }
