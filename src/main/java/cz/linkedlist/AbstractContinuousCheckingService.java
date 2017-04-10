@@ -1,6 +1,7 @@
 package cz.linkedlist;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.TaskScheduler;
@@ -14,10 +15,14 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public abstract class AbstractContinuousCheckingService implements ContinuousCheckingService {
 
-    private final JdbcTemplate jdbc;
-    protected final TileListingService listingService;
-    protected final TileInfoService infoService;
-    protected final TaskScheduler scheduler;
+    @Autowired
+    private JdbcTemplate jdbc;
+    @Autowired
+    protected TileListingService listingService;
+    @Autowired
+    protected TileInfoService infoService;
+    @Autowired
+    protected TaskScheduler scheduler;
 
     @Override
     public void register(UTMCode utm, Double cloudiness) {

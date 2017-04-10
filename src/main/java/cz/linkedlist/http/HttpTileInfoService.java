@@ -5,9 +5,9 @@ import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
@@ -26,8 +26,12 @@ import static cz.linkedlist.TileDownloader.DOWN_URL;
 @Slf4j
 public class HttpTileInfoService implements TileInfoService {
 
-    private final TileListingService listingService;
-    private final RestTemplate rest;
+    @Autowired
+    private TileListingService listingService;
+    @Autowired
+    private RestTemplate rest;
+    @Autowired
+    private DownInfoService downInfoService;
 
     @Override
     public TileInfo getTileInfo(TileSet tileSet) {
@@ -48,18 +52,14 @@ public class HttpTileInfoService implements TileInfoService {
     }
 
     @Override
-    @Async
     public ListenableFuture<TileSet> downTileInfo(final TileSet tileSet) {
-        log.info("Downloading tileInfo for tileSet: {}", tileSet);
-        final TileInfo info = getTileInfo(tileSet);
-        final TileSet set = new TileSet(tileSet);
-        set.setInfo(info);
-        return new AsyncResult<>(set);
+        return downInfoService.downTileInfo(tileSet);
     }
 
     @Override
+    @Async
     public ListenableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
-        final List<ListenableFuture<TileSet>> futures = tileSets.stream().map(this::downTileInfo).collect(Collectors.toList());
+        final List<ListenableFuture<TileSet>> futures = tileSets.stream().map(downInfoService::downTileInfo).collect(Collectors.toList());
         return AsyncUtil.allOf(futures);
     }
 }
