@@ -8,6 +8,7 @@ import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -43,6 +44,17 @@ public class AbstractContinuousCheckingServiceTest {
 
         assertThat(tasks, hasItem(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now())));
         Mockito.verify(testService).createTask(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now()), AbstractContinuousCheckingService.DEFAULT_CRON_TRIGGER);
+    }
+
+    @Test
+    public void registerWithTrigger() throws Exception {
+        assertThat(testService, not(nullValue()));
+        CronTrigger t = new CronTrigger("10 0 0 * * ?");
+        testService.register(UTMCode.of("36MTD"), 65D, t);
+        Collection<DownloadTask> tasks = testService.list();
+
+        assertThat(tasks, hasItem(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now())));
+        Mockito.verify(testService).createTask(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now()), t);
     }
 
 }
