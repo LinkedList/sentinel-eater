@@ -7,6 +7,7 @@ import cz.linkedlist.http.xml.ListBucketResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ import static cz.linkedlist.SentinelEater.TILES;
 @Service("http-listing")
 @Profile(SentinelEater.Profiles.HTTP)
 @RequiredArgsConstructor
+@Transactional
 public class HttpTileListingService implements TileListingService {
 
     private static final String EXISTS_URL = "https://sentinel-s2-l1c.s3.amazonaws.com/?delimiter=/&prefix=";
