@@ -47,7 +47,7 @@ public class CacheImpl implements Cache {
     public boolean insert(TileSet tileSet, boolean exists) {
         log.debug("Inserting to cache tileSet: {}, exists: {}", tileSet, exists);
         jdbc.update(
-                "insert into cache VALUES (?, ?, ?)",
+                "merge into cache VALUES (?, ?, ?)",
                 tileSet.getCode().toString(),
                 tileSet.getDate(),
                 exists
