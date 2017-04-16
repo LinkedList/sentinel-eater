@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class HttpContinuousCheckingService extends AbstractContinuousCheckingService {
 
     @Override
-    protected void createTask(DownloadTask task) {
-        scheduler.schedule(new HttpDownloadTask(task, listingService, infoService), new CronTrigger("10 * * * * ?"));
+    protected void createTask(DownloadTask task, CronTrigger trigger) {
+        scheduler.schedule(new HttpDownloadTask(task, listingService, infoService), trigger);
     }
 }

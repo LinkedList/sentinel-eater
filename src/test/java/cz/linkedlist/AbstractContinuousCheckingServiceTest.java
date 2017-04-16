@@ -42,7 +42,7 @@ public class AbstractContinuousCheckingServiceTest {
         Collection<DownloadTask> tasks = testService.list();
 
         assertThat(tasks, hasItem(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now())));
-        Mockito.verify(testService).createTask(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now()));
+        Mockito.verify(testService).createTask(new DownloadTask(UTMCode.of("36MTD"), 65D, LocalDate.now()), AbstractContinuousCheckingService.DEFAULT_CRON_TRIGGER);
     }
 
 }
