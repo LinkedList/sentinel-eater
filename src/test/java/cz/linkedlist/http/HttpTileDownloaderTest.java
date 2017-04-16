@@ -41,7 +41,7 @@ public class HttpTileDownloaderTest {
     }
 
     @Test
-    public void testDownloadBand() throws Exception {
+    public void testDownloadProductInfo() throws Exception {
         TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
         Path path = Paths.get("/tmp/" + tileSet.productInfo().replace("/", "_"));
         Files.deleteIfExists(path);
@@ -51,4 +51,47 @@ public class HttpTileDownloaderTest {
         Files.deleteIfExists(path);
     }
 
+    @Test
+    public void testDownloadTileInfo() throws Exception {
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        Path path = Paths.get("/tmp/" + tileSet.tileInfo().replace("/", "_"));
+        Files.deleteIfExists(path);
+        downloader.downTileInfo(tileSet);
+        assertThat(Files.exists(path), is(true));
+        assertTrue(Files.size(path) > 0);
+        Files.deleteIfExists(path);
+    }
+
+    @Test
+    public void testMetadata() throws Exception {
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        Path path = Paths.get("/tmp/" + tileSet.metadata().replace("/", "_"));
+        Files.deleteIfExists(path);
+        downloader.downMetadata(tileSet);
+        assertThat(Files.exists(path), is(true));
+        assertTrue(Files.size(path) > 0);
+        Files.deleteIfExists(path);
+    }
+
+    @Test
+    public void testBand() throws Exception {
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        Path path = Paths.get("/tmp/" + tileSet.band(1).get().replace("/", "_"));
+        Files.deleteIfExists(path);
+        downloader.downBand(tileSet, 1);
+        assertThat(Files.exists(path), is(true));
+        assertTrue(Files.size(path) > 0);
+        Files.deleteIfExists(path);
+    }
+
+    @Test
+    public void testBand8A() throws Exception {
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        Path path = Paths.get("/tmp/" + tileSet.band8A().replace("/", "_"));
+        Files.deleteIfExists(path);
+        downloader.downBand8A(tileSet);
+        assertThat(Files.exists(path), is(true));
+        assertTrue(Files.size(path) > 0);
+        Files.deleteIfExists(path);
+    }
 }
