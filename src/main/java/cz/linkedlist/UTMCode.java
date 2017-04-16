@@ -30,13 +30,16 @@ public class UTMCode {
     }
 
     public static UTMCode of(String code) {
+        final String c;
         if(code.contains("/")) {
-            code = code.replace("/", "");
+            c = code.replace("/", "");
+        } else {
+            c = code;
         }
 
-        Integer gridZone = Integer.valueOf(code.substring(0, 2));
-        String band = code.substring(2, 3);
-        String square = code.substring(3, 5);
+        Integer gridZone = Integer.valueOf(c.substring(0, 2));
+        String band = c.substring(2, 3);
+        String square = c.substring(3, 5);
 
         return new UTMCode(gridZone, band, square);
     }

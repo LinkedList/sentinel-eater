@@ -18,6 +18,4 @@ public class DownloadTask {
     private Double cloudiness;
     private LocalDate date;
 
-    public DownloadTask() {
-    }
 }
