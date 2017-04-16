@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,7 +61,7 @@ public class HttpTileInfoService implements TileInfoService {
 
     @Override
     @Async
-    public ListenableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
+    public ListenableFuture<List<TileSet>> downTileInfo(Collection<TileSet> tileSets) {
         final List<ListenableFuture<TileSet>> futures = tileSets.stream().map(downInfoService::downTileInfo).collect(Collectors.toList());
         return AsyncUtil.allOf(futures);
     }

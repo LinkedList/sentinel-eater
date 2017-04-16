@@ -4,6 +4,7 @@ import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
 import org.springframework.util.concurrent.ListenableFuture;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,5 +22,5 @@ public interface TileInfoService {
      */
     ListenableFuture<TileSet> downTileInfo(final TileSet tileSet);
 
-    ListenableFuture<List<TileSet>> downTileInfo(final List<TileSet> tileSets);
+    ListenableFuture<List<TileSet>> downTileInfo(final Collection<TileSet> tileSets);
 }

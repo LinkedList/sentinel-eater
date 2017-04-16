@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import static cz.linkedlist.SentinelEater.BUCKET;
@@ -49,7 +50,7 @@ public class AmazonSDKTileInfoService implements TileInfoService {
     }
 
     @Override
-    public ListenableFuture<List<TileSet>> downTileInfo(List<TileSet> tileSets) {
+    public ListenableFuture<List<TileSet>> downTileInfo(Collection<TileSet> tileSets) {
         throw new UnsupportedOperationException("This feature is not yet implemented");
     }
 
