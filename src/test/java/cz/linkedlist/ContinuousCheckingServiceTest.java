@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class AbstractContinuousCheckingServiceTest {
+public class ContinuousCheckingServiceTest {
 
     @Autowired
     @Spy
