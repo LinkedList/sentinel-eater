@@ -83,15 +83,4 @@ public class HttpTileDownloaderTest {
         assertTrue(Files.size(path) > 0);
         Files.deleteIfExists(path);
     }
-
-    @Test
-    public void testBand8A() throws Exception {
-        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
-        Path path = Paths.get("/tmp/" + tileSet.band8A().replace("/", "_"));
-        Files.deleteIfExists(path);
-        downloader.downBand8A(tileSet);
-        assertThat(Files.exists(path), is(true));
-        assertTrue(Files.size(path) > 0);
-        Files.deleteIfExists(path);
-    }
 }

@@ -9,5 +9,6 @@ create table tasks(
   utm VARCHAR(8) not null,
   "date" date not null,
   cloudiness double not null,
+  contents TEXT,
   PRIMARY KEY (utm, "date")
 );

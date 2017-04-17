@@ -2,13 +2,17 @@ package cz.linkedlist;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>.
@@ -31,25 +35,45 @@ public abstract class AbstractContinuousCheckingService implements ContinuousChe
     protected TaskScheduler scheduler;
 
     @Override
-    public void register(UTMCode utm, Double cloudiness) {
-        register(utm, cloudiness, DEFAULT_CRON_TRIGGER);
+    public void register(UTMCode utm, Double cloudiness, List<TileSet.Contents> contents) {
+        register(utm, cloudiness, contents, DEFAULT_CRON_TRIGGER);
     }
 
     @Override
-    public void register(UTMCode utm, Double cloudiness, CronTrigger trigger) {
+    public void register(UTMCode utm, Double cloudiness, List<TileSet.Contents> contents, CronTrigger trigger) {
+        //Nasty hack, nasty hack :D
+        StringBuilder contentsStr = new StringBuilder();
+        contents.forEach(c -> contentsStr.append(c).append(","));
+
         jdbc.update(
-                "insert into tasks VALUES (?, ?, ?)",
+                "insert into tasks VALUES (?, ?, ?, ?)",
                 utm.toString(),
                 LocalDate.now(),
-                cloudiness
+                cloudiness,
+                contentsStr.toString()
         );
-        createTask(new DownloadTask(utm, cloudiness, LocalDate.now()), trigger);
+        createTask(new DownloadTask(utm, cloudiness, LocalDate.now(), contents), trigger);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Collection<DownloadTask> list() {
-        return jdbc.query("select * from tasks", new BeanPropertyRowMapper(DownloadTask.class));
+        return jdbc.query("select * from tasks", (resultSet, i) -> {
+            DownloadTask task = new DownloadTask();
+            task.setCloudiness(resultSet.getDouble("cloudiness"));
+            task.setDate(resultSet.getDate("date").toLocalDate());
+            task.setUtm(UTMCode.of(resultSet.getString("utm")));
+            String contents = resultSet.getString("contents");
+            if(StringUtils.hasLength(contents)) {
+                final List<TileSet.Contents> collect = Arrays.stream(contents.split(","))
+                    .map(TileSet.Contents::valueOf)
+                        .collect(Collectors.toList());
+                task.setContents(collect);
+            } else {
+                task.setContents(Collections.emptyList());
+            }
+            return task;
+        });
     }
 
     protected abstract void createTask(DownloadTask task, CronTrigger trigger);

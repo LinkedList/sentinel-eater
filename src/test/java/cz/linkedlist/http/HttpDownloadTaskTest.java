@@ -12,6 +12,7 @@ import org.springframework.util.concurrent.SuccessCallback;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,7 +34,7 @@ public class HttpDownloadTaskTest {
 
     @Test
     public void testRun() {
-        DownloadTask downloadTask = new DownloadTask(UTMCode.of("36MTD"), 20D, LocalDate.of(2016, 5, 1));
+        DownloadTask downloadTask = new DownloadTask(UTMCode.of("36MTD"), 20D, LocalDate.of(2016, 5, 1), Collections.emptyList());
         HttpDownloadTask task = new HttpDownloadTask(downloadTask, listingService, infoService);
         task.run();
     }
@@ -51,7 +52,7 @@ public class HttpDownloadTaskTest {
         set1.setInfo(info1);
         set2.setInfo(info2);
 
-        DownloadTask task = new DownloadTask(UTMCode.of("36MTD"), 70D, LocalDate.of(2016, 5, 1));
+        DownloadTask task = new DownloadTask(UTMCode.of("36MTD"), 70D, LocalDate.of(2016, 5, 1), Collections.emptyList());
         List<TileSet> successResultTileSets = new ArrayList<>();
         SuccessCallback<List<TileSet>> success = new HttpDownloadTask.HttpDownloadTaskSuccess(task, successResultTileSets);
 

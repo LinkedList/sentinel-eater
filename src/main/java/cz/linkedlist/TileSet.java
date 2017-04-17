@@ -76,4 +76,24 @@ public class TileSet {
         }
         throw new RuntimeException("Get tile cloudiness was attempted for tileSet without TileInfo: " + this.toString());
     }
+
+    public enum Contents {
+        BAND_1,
+        BAND_2,
+        BAND_3,
+        BAND_4,
+        BAND_5,
+        BAND_6,
+        BAND_7,
+        BAND_8,
+        BAND_8A,
+        BAND_9,
+        BAND_10,
+        BAND_11,
+        BAND_12,
+        PROD_INFO,
+        TILE_INFO,
+        METADATA
+    }
+
 }
