@@ -122,6 +122,7 @@
                 <configuration>
 					<excludes>
 						<exclude>cz/linkedlist/info/**/*</exclude>
+						<exclude>cz/linkedlist/http/xml/**/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
