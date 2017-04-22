@@ -1,12 +1,11 @@
 package cz.linkedlist.http;
 
+import cz.linkedlist.AbstractTileDownloader;
 import cz.linkedlist.SentinelEater;
-import cz.linkedlist.TileDownloader;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -22,40 +21,10 @@ import java.net.URL;
 @Async
 @Profile(SentinelEater.Profiles.HTTP)
 @RequiredArgsConstructor
-public class HttpTileDownloader implements TileDownloader {
+public class HttpTileDownloader extends AbstractTileDownloader {
+    protected final TileListingService listingService;
 
-    @Value(DESTINATION_FOLDER_PROP)
-    private String destinationFolder;
-    private final TileListingService listingService;
-
-    @Override
-    public void downBand(TileSet tileSet, int band) {
-        tileSet.band(band)
-                .map(s -> down(tileSet, s))
-                .orElseThrow(() -> new RuntimeException("I am sorry, cannot download band: " + band));
-    }
-
-    @Override
-    public void downBand8A(TileSet tileSet) {
-        down(tileSet, tileSet.band8A());
-    }
-
-    @Override
-    public void downProductInfo(TileSet tileSet) {
-        down(tileSet, tileSet.productInfo());
-    }
-
-    @Override
-    public void downTileInfo(TileSet tileSet) {
-        down(tileSet, tileSet.tileInfo());
-    }
-
-    @Override
-    public void downMetadata(TileSet tileSet) {
-        down(tileSet, tileSet.metadata());
-    }
-
-    private File down(TileSet tileSet, String what) {
+    protected File down(TileSet tileSet, String what) {
         if(!listingService.exists(tileSet)) {
             throw new RuntimeException("I cannot download something, that doesn't exist, sorry. TileSet: " + tileSet);
         }
@@ -69,9 +38,5 @@ public class HttpTileDownloader implements TileDownloader {
             throw new RuntimeException("There was a problem downloading object from bucket", O_o);
         }
         return file;
-    }
-
-    public void setDestinationFolder(String destinationFolder) {
-        this.destinationFolder = destinationFolder;
     }
 }

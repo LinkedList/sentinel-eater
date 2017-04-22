@@ -32,10 +32,13 @@ public class HttpDownloadTaskTest {
     @Autowired
     private TileListingService listingService;
 
+    @Autowired
+    private TileDownloader tileDownloader;
+
     @Test
     public void testRun() {
         DownloadTask downloadTask = new DownloadTask(UTMCode.of("36MTD"), 20D, LocalDate.of(2016, 5, 1), Collections.emptyList());
-        HttpDownloadTask task = new HttpDownloadTask(downloadTask, listingService, infoService);
+        HttpDownloadTask task = new HttpDownloadTask(downloadTask, listingService, infoService, tileDownloader);
         task.run();
     }
 

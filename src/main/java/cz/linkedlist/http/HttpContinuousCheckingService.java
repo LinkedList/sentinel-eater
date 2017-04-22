@@ -13,6 +13,6 @@ public class HttpContinuousCheckingService extends AbstractContinuousCheckingSer
 
     @Override
     protected void createTask(DownloadTask task, CronTrigger trigger) {
-        scheduler.schedule(new HttpDownloadTask(task, listingService, infoService), trigger);
+        scheduler.schedule(new HttpDownloadTask(task, listingService, infoService, downloader), trigger);
     }
 }

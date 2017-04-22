@@ -33,6 +33,8 @@ public abstract class AbstractContinuousCheckingService implements ContinuousChe
     protected TileInfoService infoService;
     @Autowired
     protected TaskScheduler scheduler;
+    @Autowired
+    protected TileDownloader downloader;
 
     @Override
     public void register(UTMCode utm, Double cloudiness, List<TileSet.Contents> contents) {

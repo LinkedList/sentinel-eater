@@ -93,7 +93,23 @@ public class TileSet {
         BAND_12,
         PROD_INFO,
         TILE_INFO,
-        METADATA
+        METADATA;
+
+        public String map(TileSet set) {
+            if(this.name().matches("BAND_(?:[2-9]|1[0-2]?)")) {
+                return set.band(Integer.valueOf(this.name().split("_")[1])).get();
+            } else if(this == BAND_8A) {
+                return set.band8A();
+            } else if(this == PROD_INFO) {
+                return set.productInfo();
+            } else if(this == TILE_INFO) {
+                return set.tileInfo();
+            } else if(this == METADATA) {
+                return set.metadata();
+            }
+
+            throw new RuntimeException("This shouldn't happen ever!!! Please investigate!!!");
+        }
     }
 
 }

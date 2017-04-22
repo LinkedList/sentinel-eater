@@ -1,6 +1,7 @@
 package cz.linkedlist;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -20,6 +21,10 @@ public interface TileDownloader {
     void downTileInfo(TileSet tileSet);
 
     void downMetadata(TileSet tileSet);
+
+    void downContent(TileSet tileSet, TileSet.Contents content);
+
+    void downContent(TileSet tileSet, List<TileSet.Contents> contents);
 
     default void ensureFolderExists(String destinationFolder) {
         File destFolder = new File(destinationFolder);
