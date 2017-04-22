@@ -2,6 +2,7 @@ package cz.linkedlist.http;
 
 
 import cz.linkedlist.*;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +13,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>.
  */
 @RequiredArgsConstructor
+@EqualsAndHashCode(of = "task")
 public class HttpDownloadTask implements Runnable {
 
     private static final Logger log = LoggerFactory.getLogger(HttpDownloadTask.class);
@@ -79,18 +80,5 @@ public class HttpDownloadTask implements Runnable {
                 }
             }
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof HttpDownloadTask)) return false;
-        HttpDownloadTask that = (HttpDownloadTask) o;
-        return Objects.equals(task, that.task);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(task);
     }
 }
