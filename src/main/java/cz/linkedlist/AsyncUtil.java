@@ -11,7 +11,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-public class AsyncUtil {
+public final class AsyncUtil {
+
+    private AsyncUtil() {
+    }
 
     @SuppressWarnings("unchecked")
     public static <T> ListenableFuture<List<T>> allOf(List<ListenableFuture<T>> futures) {
