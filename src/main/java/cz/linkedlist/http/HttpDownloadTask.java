@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -78,5 +79,18 @@ public class HttpDownloadTask implements Runnable {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HttpDownloadTask)) return false;
+        HttpDownloadTask that = (HttpDownloadTask) o;
+        return Objects.equals(task, that.task);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(task);
     }
 }
