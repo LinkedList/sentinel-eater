@@ -1,11 +1,11 @@
 package cz.linkedlist.http;
 
+import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import cz.linkedlist.UTMCode;
 import cz.linkedlist.cache.Cache;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.file.Files;
@@ -16,11 +16,11 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.hamcrest.Matchers.*;
 
 /**
  * @author Martin Macko <https://github.com/LinkedList>
@@ -32,7 +32,7 @@ public class HttpTileDownloaderTest {
 
     @Before
     public void init() {
-        Cache cache = Mockito.mock(Cache.class);
+        Cache cache = mock(Cache.class);
         when(cache.exists(anyObject())).thenReturn(Optional.empty());
         when(cache.insert(anyObject(), eq(true))).thenReturn(true);
         when(cache.insert(anyObject(), eq(false))).thenReturn(false);
@@ -111,5 +111,16 @@ public class HttpTileDownloaderTest {
         assertThat(Files.exists(path2), is(true));
         assertTrue(Files.size(path2) > 0);
         Files.deleteIfExists(path2);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testNotExists() {
+        TileListingService listingService = mock(TileListingService.class);
+        when(listingService.exists(any())).thenReturn(false);
+
+        HttpTileDownloader downloader = new HttpTileDownloader(listingService);
+
+        TileSet tileSet = new TileSet(UTMCode.of("36AAA"), LocalDate.of(2016, 8, 31));
+        downloader.down(tileSet, tileSet.productInfo());
     }
 }
