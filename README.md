@@ -15,9 +15,10 @@
 - [x] Extracting info about concrete tile (e.g. cloudiness)
 - [x] Caching available dates to local DB
 - [ ] Search by parameters (cloudiness, intersecting geometry etc.)
-- [ ] Continuous checking of desired tiles for new updates (SNS notifications, cron polling)
+- [x] Continuous checking of desired tiles for new updates (cron polling)
 - [ ] API for actually doing all these things :smile:
 - [ ] (Optional) Downloading tiles to supplied S3 bucket
+- [ ] (Optional) Respond to SNS notifications for continuous checking of desired tiles
 
 ## Settings
 Sentinel Eater can run in two modes currently HTTP and Amazon.
