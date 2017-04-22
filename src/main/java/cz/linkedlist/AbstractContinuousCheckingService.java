@@ -1,9 +1,12 @@
 package cz.linkedlist;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.util.StringUtils;
 
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public abstract class AbstractContinuousCheckingService implements ContinuousCheckingService {
 
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     /**
      * Default is daily at 01:00
      */
@@ -42,7 +46,8 @@ public abstract class AbstractContinuousCheckingService implements ContinuousChe
     }
 
     @Override
-    public void register(UTMCode utm, Double cloudiness, List<TileSet.Contents> contents, CronTrigger trigger) {
+    public void register(UTMCode utm, Double cloudiness, List<TileSet.Contents> contents, Trigger trigger) {
+        log.info("Registering a new task: utm: {}, cloudiness: {}, contents: {}, trigger: {}", utm, cloudiness, contents, trigger);
         //Nasty hack, nasty hack :D
         StringBuilder contentsStr = new StringBuilder();
         contents.forEach(c -> contentsStr.append(c).append(","));
@@ -78,5 +83,5 @@ public abstract class AbstractContinuousCheckingService implements ContinuousChe
         });
     }
 
-    protected abstract void createTask(DownloadTask task, CronTrigger trigger);
+    protected abstract void createTask(DownloadTask task, Trigger trigger);
 }

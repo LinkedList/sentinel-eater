@@ -1,6 +1,6 @@
 package cz.linkedlist;
 
-import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.scheduling.Trigger;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +25,7 @@ public interface ContinuousCheckingService {
      * @param contents
      * @param cron trigger expression
      */
-    void register(final UTMCode utm, final Double cloudiness, List<TileSet.Contents> contents, CronTrigger cron);
+    void register(final UTMCode utm, final Double cloudiness, List<TileSet.Contents> contents, Trigger cron);
 
     /**
      * Lists all currently registered tasks
