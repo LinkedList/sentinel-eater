@@ -5,20 +5,19 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cz.linkedlist.SentinelEater;
-import cz.linkedlist.TileInfoService;
-import cz.linkedlist.TileListingService;
-import cz.linkedlist.TileSet;
+import cz.linkedlist.*;
 import cz.linkedlist.info.ProductInfo;
 import cz.linkedlist.info.TileInfo;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cz.linkedlist.SentinelEater.BUCKET;
 
@@ -27,12 +26,17 @@ import static cz.linkedlist.SentinelEater.BUCKET;
  */
 @Service("amazon-info")
 @Profile(SentinelEater.Profiles.AMAZON)
-@RequiredArgsConstructor
+@Transactional
 public class AmazonSDKTileInfoService implements TileInfoService {
 
-    private final TileListingService listingService;
-    private final ObjectMapper mapper;
-    private final AmazonS3Client client;
+    @Autowired
+    private TileListingService listingService;
+    @Autowired
+    private ObjectMapper mapper;
+    @Autowired
+    private AmazonS3Client client;
+    @Autowired
+    private DownInfoService downInfoService;
 
     @Override
     public TileInfo getTileInfo(TileSet tileSet) {
@@ -46,12 +50,16 @@ public class AmazonSDKTileInfoService implements TileInfoService {
 
     @Override
     public ListenableFuture<TileSet> downTileInfo(final TileSet tileSet) {
-        throw new UnsupportedOperationException("This feature is not yet implemented");
+        return downInfoService.downTileInfo(tileSet);
     }
 
     @Override
     public ListenableFuture<List<TileSet>> downTileInfo(Collection<TileSet> tileSets) {
-        throw new UnsupportedOperationException("This feature is not yet implemented");
+        final List<ListenableFuture<TileSet>> futures =
+                tileSets.stream()
+                        .map(downInfoService::downTileInfo)
+                        .collect(Collectors.toList());
+        return AsyncUtil.allOf(futures);
     }
 
     private <OBJ> OBJ down(TileSet tileSet, Class<OBJ> clazz) {
@@ -59,7 +67,7 @@ public class AmazonSDKTileInfoService implements TileInfoService {
             throw new RuntimeException("TileSet [" + tileSet + "] doesn't exist. Sorry.");
         }
 
-        GetObjectRequest request = new GetObjectRequest(BUCKET, tileSet.productInfo());
+        GetObjectRequest request = new GetObjectRequest(BUCKET, key(tileSet, clazz));
         try(
                 S3Object s3Object = client.getObject(request);
                 S3ObjectInputStream objectInputStream = s3Object.getObjectContent()
@@ -68,6 +76,17 @@ public class AmazonSDKTileInfoService implements TileInfoService {
         } catch (IOException ex) {
             throw new RuntimeException("There was a problem downloading object from bucket", ex);
         }
+    }
 
+    public static <OBJ> String key(TileSet tileSet, Class<OBJ> clazz) {
+        if(TileInfo.class.equals(clazz)) {
+            return tileSet.tileInfo();
+        }
+        if(ProductInfo.class.equals(clazz)) {
+            return tileSet.productInfo();
+        }
+
+        throw new RuntimeException("This shouldn't happen. " +
+                "Please check your arguments. clazz should be one of: TileInfo, ProductInfo. Instead supplied: " + clazz);
     }
 }

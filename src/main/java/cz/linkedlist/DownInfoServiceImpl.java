@@ -1,8 +1,5 @@
-package cz.linkedlist.http;
+package cz.linkedlist;
 
-import cz.linkedlist.DownInfoService;
-import cz.linkedlist.TileInfoService;
-import cz.linkedlist.TileSet;
 import cz.linkedlist.info.TileInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 /**
  * @author Martin Macko <https://github.com/LinkedList>
  */
-@Service("http-down-info")
+@Service("down-info")
 @Slf4j
 public class DownInfoServiceImpl implements DownInfoService {
 
