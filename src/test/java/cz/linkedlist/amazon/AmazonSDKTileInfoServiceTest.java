@@ -119,6 +119,22 @@ public class AmazonSDKTileInfoServiceTest {
     }
 
     @Test
+    public void testDownloadTileInfo() throws Exception {
+        when(listingService.exists(any())).thenReturn(true);
+        S3Object object = mock(S3Object.class);
+        when(object.getObjectContent()).thenReturn(
+                new S3ObjectInputStream(tileInfoResource.getInputStream(), mock(HttpRequestBase.class)));
+        when(client.getObject(any())).thenReturn(object);
+        final TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        final ListenableFuture<TileSet> f = service.downTileInfo(tileSet);
+        f.addCallback(
+                    set -> {
+                        assertThat(set.getInfo(), not(nullValue()));
+                        assertThat(set.cloudiness(), closeTo(87.73D, 0D));
+                    }, t -> Assert.fail());
+    }
+
+    @Test
     public void testKey() {
         final TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
         assertThat(AmazonSDKTileInfoService.key(tileSet, TileInfo.class), is(tileSet.tileInfo()));
