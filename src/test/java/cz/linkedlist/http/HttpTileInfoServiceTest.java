@@ -99,4 +99,9 @@ public class HttpTileInfoServiceTest {
     public void downloadNotExists() {
         service.getTileInfo(new TileSet(UTMCode.of("11AAA"), LocalDate.of(2016, 8, 31)));
     }
+
+    @Test(expected = RuntimeException.class)
+    public void downloadNotExistsProductInfo() {
+        service.getProductInfo(new TileSet(UTMCode.of("11AAA"), LocalDate.of(2016, 8, 31)));
+    }
 }
