@@ -83,4 +83,20 @@ public class HttpTileInfoServiceTest {
                     });
                 }, t -> Assert.fail());
     }
+
+    @Test
+    public void testDownloadTileInfo() {
+        final TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        final ListenableFuture<TileSet> f = service.downTileInfo(tileSet);
+        f.addCallback(set -> {
+                    assertThat(set.getInfo(), not(nullValue()));
+                    assertThat(set.cloudiness(), closeTo(0.06D, 0.0D));
+                }
+                , throwable -> Assert.fail());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void downloadNotExists() {
+        service.getTileInfo(new TileSet(UTMCode.of("11AAA"), LocalDate.of(2016, 8, 31)));
+    }
 }
