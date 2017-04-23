@@ -79,7 +79,7 @@ public class HttpTileInfoServiceTest {
                     assertThat(list, hasSize(2));
                     list.forEach(set -> {
                         assertThat(set.getInfo(), not(nullValue()));
-                        assertThat(set.cloudiness(), is(0.06D));
+                        assertThat(set.cloudiness(), closeTo(0.06D, 0.0D));
                     });
                 }, t -> Assert.fail());
     }
