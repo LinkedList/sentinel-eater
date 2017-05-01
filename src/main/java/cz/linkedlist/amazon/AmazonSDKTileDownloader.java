@@ -9,6 +9,7 @@ import cz.linkedlist.SentinelEater;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
@@ -25,6 +26,7 @@ import static cz.linkedlist.SentinelEater.BUCKET;
  */
 @Service("amazon-downloader")
 @Async
+@Slf4j
 @Profile(SentinelEater.Profiles.AMAZON)
 @RequiredArgsConstructor
 public class AmazonSDKTileDownloader extends AbstractTileDownloader {
@@ -40,6 +42,7 @@ public class AmazonSDKTileDownloader extends AbstractTileDownloader {
         ensureFolderExists(destinationFolder);
         File downloaded = isDownloaded(what);
         if(downloaded != null) {
+            log.info("File [{}] already exists, don't have to download again.", downloaded);
             return downloaded;
         }
 

@@ -135,4 +135,15 @@ public class HttpTileDownloaderTest {
         assertThat(downloader.isDownloaded(tileSet.productInfo().replace("/", "_")), is(path.toFile()));
         Files.deleteIfExists(path);
     }
+
+    @Test
+    public void testIsDownloaded() throws Exception {
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        Path path = Paths.get("/tmp/" + tileSet.productInfo().replace("/", "_"));
+        Files.deleteIfExists(path);
+        downloader.downProductInfo(tileSet);
+        assertThat(downloader.isDownloaded(tileSet.productInfo().replace("/", "_")), is(path.toFile()));
+        downloader.downProductInfo(tileSet);
+        Files.deleteIfExists(path);
+    }
 }

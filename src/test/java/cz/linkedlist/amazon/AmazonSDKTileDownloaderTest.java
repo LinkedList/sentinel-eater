@@ -61,6 +61,8 @@ public class AmazonSDKTileDownloaderTest {
         downloader.down(tileSet, tileSet.productInfo());
         final Path downloadedFile = Paths.get("/tmp/testFolder/" + (tileSet.productInfo().replace("/", "_")));
         assertThat(Files.exists(downloadedFile));
+        //tests already downloaded file
+        downloader.down(tileSet, tileSet.productInfo());
         Files.delete(downloadedFile);
         Files.delete(Paths.get("/tmp/testFolder"));
     }

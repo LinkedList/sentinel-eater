@@ -5,6 +5,7 @@ import cz.linkedlist.SentinelEater;
 import cz.linkedlist.TileListingService;
 import cz.linkedlist.TileSet;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
@@ -19,6 +20,7 @@ import java.net.URL;
  */
 @Service("http-downloader")
 @Async
+@Slf4j
 @Profile(SentinelEater.Profiles.HTTP)
 @RequiredArgsConstructor
 public class HttpTileDownloader extends AbstractTileDownloader {
@@ -31,6 +33,7 @@ public class HttpTileDownloader extends AbstractTileDownloader {
         ensureFolderExists(destinationFolder);
         File downloaded = isDownloaded(what);
         if(downloaded != null) {
+            log.info("File [{}] already exists, don't have to download again.", downloaded);
             return downloaded;
         }
 
