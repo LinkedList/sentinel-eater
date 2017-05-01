@@ -29,6 +29,10 @@ public class HttpTileDownloader extends AbstractTileDownloader {
             throw new RuntimeException("I cannot download something, that doesn't exist, sorry. TileSet: " + tileSet);
         }
         ensureFolderExists(destinationFolder);
+        File downloaded = isDownloaded(what);
+        if(downloaded != null) {
+            return downloaded;
+        }
 
         File file = new File(destinationFolder + what.replace("/", "_"));
 

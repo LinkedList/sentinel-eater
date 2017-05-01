@@ -55,4 +55,10 @@ public abstract class AbstractTileDownloader implements TileDownloader {
     public void setDestinationFolder(String destinationFolder) {
         this.destinationFolder = destinationFolder;
     }
+
+    @Override
+    public File isDownloaded(String what) {
+        File file = new File(destinationFolder + what.replace("/", "_"));
+        return file.exists() ? file : null;
+    }
 }

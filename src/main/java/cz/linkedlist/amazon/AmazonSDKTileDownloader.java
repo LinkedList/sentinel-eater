@@ -38,6 +38,10 @@ public class AmazonSDKTileDownloader extends AbstractTileDownloader {
         }
 
         ensureFolderExists(destinationFolder);
+        File downloaded = isDownloaded(what);
+        if(downloaded != null) {
+            return downloaded;
+        }
 
         GetObjectRequest request = new GetObjectRequest(BUCKET, what);
         File file = new File(destinationFolder + what.replace("/", "_"));

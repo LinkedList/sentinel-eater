@@ -40,4 +40,6 @@ public interface TileDownloader {
         throw new RuntimeException("Cannot create necessary folder for downloading: " + destFolder);
     }
 
+    File isDownloaded(String what);
+
 }

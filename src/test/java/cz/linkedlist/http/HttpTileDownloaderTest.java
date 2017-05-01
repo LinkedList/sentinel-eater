@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -122,5 +123,16 @@ public class HttpTileDownloaderTest {
 
         TileSet tileSet = new TileSet(UTMCode.of("36AAA"), LocalDate.of(2016, 8, 31));
         downloader.down(tileSet, tileSet.productInfo());
+    }
+
+    @Test
+    public void testNotDownloaded() throws Exception {
+        TileSet tileSet = new TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31));
+        Path path = Paths.get("/tmp/" + tileSet.productInfo().replace("/", "_"));
+        Files.deleteIfExists(path);
+        assertThat(downloader.isDownloaded(tileSet.productInfo().replace("/", "_")), is(nullValue()));
+        downloader.downProductInfo(tileSet);
+        assertThat(downloader.isDownloaded(tileSet.productInfo().replace("/", "_")), is(path.toFile()));
+        Files.deleteIfExists(path);
     }
 }
