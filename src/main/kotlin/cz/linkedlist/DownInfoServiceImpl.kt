@@ -24,7 +24,7 @@ open class DownInfoServiceImpl : DownInfoService {
     override fun downTileInfo(tileSet: TileSet): ListenableFuture<TileSet> {
         logger.debug("Downloading tileInfo for tileSet: {}", tileSet)
         val info = service!!.getTileInfo(tileSet)
-        val set = TileSet(tileSet)
+        val set = tileSet.copy()
         set.info = (info)
         return AsyncResult(set)
     }

@@ -6,15 +6,15 @@ import java.sql.Timestamp
  * @author Martin Macko <https:></https:>//github.com/LinkedList>.
  */
 data class ProductInfo(
-    private val name: String? = null,
-    private val id: String? = null,
-    private val path: String? = null,
-    private val timestamp: Timestamp? = null,
-    private val datatakeIdentifier: String? = null,
-    private val sciHubIngestion: Timestamp? = null,
-    private val s3Ingestion: Timestamp? = null,
-    private val tiles: List<TileInfo>? = null,
-    private val datastrips: List<DataStrip>? = null
+    val name: String? = null,
+    val id: String? = null,
+    val path: String? = null,
+    val timestamp: Timestamp? = null,
+    val datatakeIdentifier: String? = null,
+    val sciHubIngestion: Timestamp? = null,
+    val s3Ingestion: Timestamp? = null,
+    val tiles: List<TileInfo>? = null,
+    val datastrips: List<DataStrip>? = null
 )
 
 /*

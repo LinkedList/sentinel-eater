@@ -47,7 +47,7 @@ class HttpContinuousCheckingServiceTest {
     @Test
     fun testCreateTask() {
         val task =
-            DownloadTask(UTMCode.of("10SAA"), 100.0, LocalDate.now(), Arrays.asList<Contents>(TileSet.Contents.BAND_1))
+            DownloadTask(UTMCode.of("10SAA"), 100.0, LocalDate.now(), arrayOf(TileSet.Contents.BAND_1))
         val trigger = PeriodicTrigger(1)
         service!!.createTask(task, trigger)
 

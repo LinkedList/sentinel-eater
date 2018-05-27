@@ -51,7 +51,7 @@ abstract class AbstractContinuousCheckingService : ContinuousCheckingService {
             cloudiness,
             contentsStr.toString()
         )
-        createTask(DownloadTask(utm, cloudiness, LocalDate.now(), contents.toTypedArray()), trigger)
+        createTask(DownloadTask(utm, cloudiness, LocalDate.now(), contents), trigger)
     }
 
     override fun list(): Collection<DownloadTask> {

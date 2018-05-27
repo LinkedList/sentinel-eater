@@ -1,11 +1,15 @@
 package cz.linkedlist.http
 
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.mock
+import com.sun.org.apache.xpath.internal.operations.Bool
 import cz.linkedlist.TileSet
 import cz.linkedlist.UTMCode
 import cz.linkedlist.cache.Cache
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito
 import org.springframework.web.client.RestTemplate
 
 import java.time.LocalDate
@@ -14,8 +18,8 @@ import java.util.Optional
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.mockito.Matchers.anyObject
-import org.mockito.Matchers.eq
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito
+import java.time.chrono.ChronoLocalDate
 
 /**
  * @author Martin Macko <https:></https:>//github.com/LinkedList>
@@ -26,10 +30,11 @@ class HttpTileListingServiceTest {
 
     @Before
     fun init() {
-        val cache = Mockito.mock(Cache::class.java)
-        `when`(cache.exists(anyObject())).thenReturn(Optional.empty())
-        `when`(cache.insert(anyObject(), eq(true))).thenReturn(true)
-        `when`(cache.insert(anyObject(), eq(false))).thenReturn(false)
+        val cache = mock<Cache> {
+            on { exists(any())} doReturn Optional.empty()
+            on { insert(any(), eq(true))} doReturn true
+            on { insert(any(), eq(false))} doReturn false
+        }
         service = HttpTileListingService(RestTemplate(), cache)
     }
 

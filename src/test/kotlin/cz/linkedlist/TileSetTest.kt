@@ -8,9 +8,7 @@ import java.util.Optional
 
 import cz.linkedlist.TileSet.Contents.*
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.not
-import org.hamcrest.Matchers.sameInstance
+import org.hamcrest.Matchers.*
 
 /**
  * @author Martin Macko <https:></https:>//github.com/LinkedList>
@@ -84,10 +82,10 @@ class TileSetTest {
         val date = LocalDate.of(2017, 3, 9)
         val setOrder = 0
         val tileSet = TileSet(code, date, setOrder)
-        val clone = TileSet(tileSet)
+        val clone = tileSet.copy()
 
         assertThat(tileSet, not(sameInstance(clone)))
-        assertThat(tileSet, `is`(clone))
+        assertThat(tileSet, equalTo(clone))
     }
 
     @Test(expected = RuntimeException::class)

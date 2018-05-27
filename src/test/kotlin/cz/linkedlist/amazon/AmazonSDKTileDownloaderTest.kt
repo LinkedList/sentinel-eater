@@ -35,7 +35,7 @@ class AmazonSDKTileDownloaderTest {
     private val listingService: TileListingService? = null
     @Mock
     private val client: AmazonS3Client? = null
-    internal var downloader: AmazonSDKTileDownloader
+    lateinit var downloader: AmazonSDKTileDownloader
 
     @Before
     fun init() {

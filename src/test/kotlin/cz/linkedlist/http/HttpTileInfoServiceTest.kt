@@ -56,8 +56,8 @@ class HttpTileInfoServiceTest {
     fun downloadProductInfo() {
         val productInfo = service!!.getProductInfo(TileSet(UTMCode.of("36MTD"), LocalDate.of(2016, 8, 31)))
         assertThat(
-            productInfo.getName(),
-            `is`<T>("S2A_OPER_PRD_MSIL1C_PDMC_20160831T150507_R078_V20160831T080612_20160831T082520")
+            productInfo.name,
+            `is`("S2A_OPER_PRD_MSIL1C_PDMC_20160831T150507_R078_V20160831T080612_20160831T082520")
         )
     }
 

@@ -48,9 +48,9 @@ class AmazonSDKTileListingServiceTest {
         val code = UTMCode(10, "M", "AB")
         val list = ListObjectsV2Result()
         list.commonPrefixes = Arrays.asList(
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/",
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2016/",
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2017/"
+            SentinelEater.TILES + code.toString() + "2015/",
+            SentinelEater.TILES + code.toString() + "2016/",
+            SentinelEater.TILES + code.toString() + "2017/"
         )
         `when`(client.listObjectsV2(any(ListObjectsV2Request::class.java))).thenReturn(list)
 
@@ -71,9 +71,9 @@ class AmazonSDKTileListingServiceTest {
         val code = UTMCode(10, "M", "AB")
         val list = ListObjectsV2Result()
         list.commonPrefixes = Arrays.asList(
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/1/",
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/2/",
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/3/"
+            SentinelEater.TILES + code.toString() + "2015/1/",
+            SentinelEater.TILES + code.toString() + "2015/2/",
+            SentinelEater.TILES + code.toString() + "2015/3/"
         )
         `when`(client.listObjectsV2(any(ListObjectsV2Request::class.java))).thenReturn(list)
 
@@ -94,9 +94,9 @@ class AmazonSDKTileListingServiceTest {
         val code = UTMCode(10, "M", "AB")
         val list = ListObjectsV2Result()
         list.commonPrefixes = Arrays.asList(
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/1/15/",
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/1/18/",
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/1/25/"
+            SentinelEater.TILES + code.toString() + "2015/1/15/",
+            SentinelEater.TILES + code.toString() + "2015/1/18/",
+            SentinelEater.TILES + code.toString() + "2015/1/25/"
         )
         `when`(client.listObjectsV2(any(ListObjectsV2Request::class.java))).thenReturn(list)
 
@@ -117,8 +117,8 @@ class AmazonSDKTileListingServiceTest {
         val code = UTMCode(10, "M", "AB")
         val list = ListObjectsV2Result()
         list.commonPrefixes = Arrays.asList(
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/1/15/0/",
-            SentinelEater.INSTANCE.getTILES() + code.toString() + "2015/1/15/1/"
+            SentinelEater.TILES + code.toString() + "2015/1/15/0/",
+            SentinelEater.TILES + code.toString() + "2015/1/15/1/"
         )
         `when`(client.listObjectsV2(any(ListObjectsV2Request::class.java))).thenReturn(list)
 

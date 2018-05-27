@@ -10,7 +10,7 @@ import java.util.Optional
 /**
  * @author Martin Macko <https:></https:>//github.com/LinkedList>
  */
-class TileSet(
+data class TileSet(
     val code: UTMCode? = null,
     val date: LocalDate? = null,
     val setOrder: Int? = null,
@@ -23,8 +23,6 @@ class TileSet(
      * @param date
      */
     constructor(code: UTMCode, date: LocalDate) : this(code, date, 0)
-
-    constructor(set: TileSet) : this(set.code, set.date, set.setOrder)
 
     override fun toString(): String {
         return "tiles/" + code!!.toString() + date!!.format(DATE_FORMAT) + setOrder + "/"
